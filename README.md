@@ -1,5 +1,5 @@
-# bigRiver
-Big River Angular 7 Front-End
+# My Service Manager
+Angular 7 Front-End interacts with a backend API written in Python
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli)
 
