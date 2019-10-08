@@ -1,0 +1,92 @@
+<div class="container">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div class="row configuration mb-2">
+      <div class="col d-inline-flex">
+          <app-tooltip-icon tooltipText="This feature provides a way for subscribers to configure additional numbers that will ring instead of, or as well as, the subscriber’s own number. Any may answer the call."></app-tooltip-icon>
+          <h5>Find-Me Follow-Me</h5>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+  </div>
+  <div *ngIf="isInitializing" class="row">
+      <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+  </div>
+  <div *ngIf="!isInitializing" class="row">
+    <div class="col-lg-8 text-left">
+      <p>Enable</p>
+    </div>
+    <div class ="col-lg-4 text-right">
+      <mat-slide-toggle
+      [checked]="isEnabled"
+      (change)="toggleEnabledStatus()">
+      </mat-slide-toggle>
+    </div>
+  </div>
+  <div class="row" *ngIf="isToggling" >
+    <div class="col-12 col-sm-12 col-md-12 col-lg-12 text-center">
+        <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+    </div>
+  </div>
+  <div class="row" *ngIf="!isToggling">
+    <div *ngIf="isEnabled">
+      <div class="col-12" *ngIf="!hasPhoneNumbers">
+          <p class="text-center">No current numbers</p>
+      </div>
+      <div *ngIf="hasPhoneNumbers" class="col-12">
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                  <th scope="col" class="header-text">Number</th>
+                  <th scope="col" class="header-text">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let tn of phoneNumbers">
+                <td>
+                  {{tn | phone: 'US'}}
+                </td>
+                <td class="text-center" (click)="deleteNumber(tn)">
+                    <fa-icon *ngIf="!isDeleting" [icon]="['fas', 'trash-alt']" size="lg" class="fa-trash-alt redOnHover"></fa-icon>
+                    <fa-icon *ngIf="isDeleting" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </div>
+      <div class="col-12 footerCol text-center mt-3">
+        <ng-template #content let-modal>
+              <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">Add A Find-Me Follow-Me Number</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                  <div class="row configuration ">
+                      <div class="col-12">
+                          <label class="label">Phone Number</label>
+                          <input [value]="fmFmNumber | phone: 'US'" (keyup)="updateFmFmNumber($event)" class="form-control forwardEmail">
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <div *ngIf="hasError" class="mr-auto">
+                  <p class="text-danger">{{errorMsg}}</p>
+                </div>
+                <button [disabled]="fmFmNumberLength !== 10" class="btn btn-primary" (click)="setFmFmNumber()">
+                  <span *ngIf="!saving">Add Number</span>
+                  <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+                </button>
+              </div>
+        </ng-template>
+        <button type="button" (click)="openLg(content)" class="btn btn-primary">
+            <fa-icon *ngIf="!saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'plus']" size="lg" class="fa-plus mr-2"></fa-icon>
+            <span *ngIf="!saving">Add Number</span>
+            <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<!-- Sidebar -->
+<div class="bg-light border-right" id="sidebar-wrapper">
+    <div class="list-group list-group-flush text-center">
+      <div *ngIf="user.type === 'user_admin' || user.type === 'user'">
+          <a class="list-group-item list-group-item-action bg-light" [routerLink]="['/dashboard']">Dashboard</a>
+          <div *ngIf="callRecords">
+            <a class="list-group-item list-group-item-action bg-light" [routerLink]="['/call-records']">Call Records</a>
+          </div>
+          <div *ngIf="billingManagement">
+            <a class="list-group-item list-group-item-action bg-light" [routerLink]="['/autopay']">Billing Options</a>
+            <a class="list-group-item list-group-item-action bg-light" [routerLink]="['/invoices']">Invoices</a>
+          </div>
+      </div>
+      <a *ngIf="user.type === 'partner_admin'" class="list-group-item list-group-item-action bg-light" [routerLink]="['/branding-options']">Branding Options</a>
+    </div>
+    <!-- <button class="btn btn-primary w-100" id="menu-toggle">Toggle Menu</button> -->
+  </div>
+  <!-- /#sidebar-wrapper -->

@@ -1,0 +1,132 @@
+<div class="container user-settings bg-white">
+    <div class="content">
+        <div class="row full-width-row">
+            <div class="col-12 full-width-col" style="height: 67px;">
+                <app-header class="bg-white" style="height: 67px;"></app-header>
+            </div>
+            <div class="col-12">
+                <div [routerLink]="['/dashboard']" routerLinkActive="router-link-active"
+                style="float: left;left: 0px;" class="d-none d-md-block">
+                <fa-icon [icon]="['fas', 'angle-left']" size="lg" class="fa-angle-left"></fa-icon>
+                Go to Dashboard
+            </div>
+            </div>
+            <div class="col-12">
+                <div class="p-2">
+                    <h1 class="mt-4 mb-4">User Profile</h1>
+                    <form class="email-reset-form p-4 border bg-white row" (ngSubmit)="submitEmailForm()"
+                        [formGroup]="emailResetForm">
+                        <div class="col-12 col-md-6">
+                            <div class="form-group">
+                                <label class="float-left" for="email">Your new email address</label>
+                                <input class="form-control" [ngClass]="{'is-invalid': submitting && emailResetForm.get('newemail').errors}" type="email"
+                                    id="newemail" placeholder="New Email" formControlName="newemail">
+                                <label class="form-error" *ngIf="submitting && emailResetForm.get('newemail').errors">
+                                    <span class="text-danger" *ngIf="emailResetForm.get('newemail').errors['required']">
+                                        New Email is required!
+                                    </span>
+                                    <span class="text-danger" *ngIf="emailResetForm.get('newemail').errors['newemail']">
+                                        Must be a valid email!
+                                    </span>
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-block btn-lg primary-btn" style="margin: 0px auto;">
+                                Update Email</button>
+                            <div *ngIf="emailSuccess">
+                                <p>{{emailAlert}}</p>
+                            </div>
+                            <div *ngIf="emailError">
+                                <p>{{emailAlert}}</p>
+                            </div>
+                        </div>
+                    </form>
+                    <form class="email-reset-form p-4 border bg-white row" (ngSubmit)="submitPasswordResetForm()"
+                    [formGroup]="passwordResetForm">
+                    <div class="col-12 col-md-6">
+                        <div class="form-group">
+                            <label class="float-left" for="password">Your current password</label>
+                            <input class="form-control" [ngClass]="{'is-invalid': submittingPasswordReset && passwordResetForm.get('currentpassword').errors}" type="password"
+                                id="currentpassword" placeholder="Current Password" formControlName="currentpassword">
+                            <label class="form-error" *ngIf="submittingPasswordReset && passwordResetForm.get('currentpassword').errors">
+                                <span class="text-danger" *ngIf="passwordResetForm.get('currentpassword').errors['required']">
+                                    Current Password is required!
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="float-left" for="password">New Password (alphanumeric, at least 8 characters
+                                long)</label>
+                            <input [ngClass]="{'is-invalid': submittingPasswordReset && passwordResetForm.get('newpassword').errors}" class="form-control" type="password" id="newpassword" placeholder=" New Password"
+                            formControlName="newpassword">
+                            <label class="form-error" *ngIf="submittingPasswordReset && passwordResetForm.get('newpassword').errors">
+                                <span class="text-danger" *ngIf="passwordResetForm.get('newpassword').errors['required']">
+                                    New Password is Required
+                                </span>
+                                <span class="text-danger" *ngIf="passwordResetForm.get('newpassword').errors['pattern']">
+                                    New Password can be alphanumeric and contain only these special characters <code>!#^$%&()*+,./:=?@_|~</code>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="float-left" for="password">New Password Confirmation</label>
+                            <input class="form-control" [ngClass]="{'is-invalid': submittingPasswordReset && passwordResetForm.get('passwordConfirmation').errors}"
+                            type="password" id="password-confirmation" placeholder="New Password Confirmation"
+                            formControlName="passwordConfirmation">
+                            <label class="form-error" *ngIf="submittingPasswordReset && passwordResetForm.get('passwordConfirmation').errors && passwordResetForm.get('passwordConfirmation').errors['notMatch']">
+                                <span class="text-danger" *ngIf="passwordResetForm.get('passwordConfirmation').errors">
+                                    New Passwords Don't Match
+                                </span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-block btn-lg primary-btn" style="margin: 0px auto;">
+                                Update Password</button>
+                        <div *ngIf="passwordSuccess">
+                            <p>{{passwordAlert}}</p>
+                        </div>
+                        <div *ngIf="passwordError">
+                            <p>{{passwordAlert}}</p>
+                        </div>
+                    </div>
+                    </form>
+                    <div class="email-reset-form p-4 border bg-white row">
+                        <div class="col-12 col-md-6">
+                            <p>Select Default TN:</p>
+                            <select class="form-control" [(ngModel)]="newdefaultTN">
+                                <option *ngFor="let tn of tns" [value]="tn.number">{{tn.number | phone: 'US'}}</option>
+                            </select>
+                            <br>
+                            <button type="submit" class="btn btn-block btn-lg primary-btn" style="margin: 0px auto;" (click)="setDefaultTN()">
+                                Update Default TN</button>
+                            <div *ngIf="defaultTNSuccess">
+                                <p>{{defaultTNAlert}}</p>
+                            </div>
+                            <div *ngIf="defaultTNError">
+                                <p>{{defaultTNAlert}}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="email-reset-form p-4 border bg-white row">
+                        <div class="col-12 col-md-6">
+                            <p>Update Label</p>
+                            <select class="form-control" [(ngModel)]="labelTN" (change)="selectChangeHandler($event)">
+                                <option *ngFor="let tn of tns" [value]="tn.number">{{tn.number | phone: 'US'}}</option>
+                            </select>
+                            <br>
+                            <input [(ngModel)]="label" [value]="label" class="form-control forwardEmail">
+                            <br>
+                            <button type="submit" class="btn btn-block btn-lg primary-btn" style="margin: 0px auto;" (click)="setLabel()">
+                                Update Label
+                            </button>
+                            <div *ngIf="labelSuccess">
+                                <p>{{labelAlert}}</p>
+                            </div>
+                            <div *ngIf="labelError">
+                                <p>{{labelAlert}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

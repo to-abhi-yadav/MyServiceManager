@@ -1,0 +1,50 @@
+<div class="container">
+	<app-six-dot-drag></app-six-dot-drag>
+	<app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+	<div class="row mb-2">
+		<div class="col d-inline-flex">
+			<app-tooltip-icon tooltipText="This feature forwards calls from a subscriber’s line to an alternate number only if the dialed number is unavailable (e.g., a power outage or fiber cut)."></app-tooltip-icon>
+			<h5>Unavailable Call Forwarding</h5>
+		</div>
+		<div class="col-12">
+			<hr>
+		</div>
+	</div>
+	<div class="row configuration">
+		<div class="col">
+			<p>Enable</p>
+		</div>
+		<div class="col-2 text-right">
+			<mat-slide-toggle #enabled [checked]="enabledStatus" (change)="checkEnabled()">
+			</mat-slide-toggle>
+		</div>
+	</div>
+	<div *ngIf="enabledStatus">
+		<div class="row">
+			<div class="col-12">
+				<p>Forwarding Number</p>
+			</div>
+			<div class="col-lg-10 text-left">
+				<input [(ngModel)]="forwardingNumber" [value]="forwardingNumber | phone: 'US'"
+					class="form-control forwardEmail" [disabled]="!enabledStatus" required minlength="10" />
+			</div>
+			<div *ngIf="invalidTn" class="col-lg-10 text-left">
+				<p style="color: red">
+					{{errorMsg}}
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-12 mt-3">
+				<button class="btn btn-primary" (click)="setUnavailableCallForwarding()">
+					<span *ngIf="!saving">SAVE SETTINGS</span>
+					<fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>				</button>
+			</div>
+		</div>
+		<div *ngIf="forwardingNumberCheck" class="row mt-3">
+			<div class="col-12">
+			  <p>Forwarding To: {{forwardingNumber | phone: 'US'}}</p>
+			</div>
+		</div>
+	</div>
+</div>

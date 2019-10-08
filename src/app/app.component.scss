@@ -1,0 +1,18 @@
+@import "../../src/assets/stylesheets/global.scss";
+// CSS for sliders
+:host /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: var(--secondaryFontColor) !important;
+}
+
+:host /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: var(--primaryButtonColor) !important;
+}
+
+:host /deep/ ngb-pagination .page-item.active .page-link{
+    background-color: var(--primaryButtonColor);
+    border-color: var(--primaryButtonColor);
+}
+
+:host /deep/ ngb-pagination .page-link{
+    color: var(--primaryButtonColor);
+}

@@ -1,0 +1,18 @@
+// CSS for sliders
+.container{
+    background: white;
+}
+
+.settingsRowCol {
+    width: 100%;
+    padding-right:10px;
+}
+
+// Small devices 
+@media (max-width: 576px) { 
+    :host{
+        width: 100%;
+        max-width: 100%;
+        overflow: hidden;
+    }
+}

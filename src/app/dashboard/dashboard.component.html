@@ -1,0 +1,60 @@
+<app-header class="d-flex d-lg-none bg-white app-header"></app-header>
+<div class="container dashboard" style="background-color:#F8F9FA">
+    <div class="content">
+        <div class="row">
+            <div class="d-none d-md-block col-12 header">
+                <app-header class="bg-white app-header"></app-header>
+            </div>
+            <div class="col-12 col-md-6 p-md-4 pt-3">
+                <h1 style="cursor: default;">Dashboard</h1>
+            </div>
+            <div class="col-12 col-md-6 pt-2 pt-md-4">
+                <div class="d-inline-block float-right" ngbDropdown #servicesDrop="ngbDropdown" placement="bottom"
+                    autoClose="true">
+                    <button id="serviceDropdown" class="mt-2 float-right btn btn-outline-primary" ngbDropdownToggle
+                        role="button">
+                        <fa-icon [icon]="['fas', 'plus']" size="1x" class="fa-plus"></fa-icon>
+                        ADD SERVICE
+                    </button>
+                    <div ngbDropdownMenu aria-labelledby="serviceDropdown">
+                        <div *ngIf="componentList.length === 0">
+                            <button class="dropdown-item">No Services Available</button>
+                        </div>
+                        <div *ngIf="componentList.length > 0">
+                            <div *ngFor="let component of componentList">
+                                <!-- TODO: Change resolveComponentName to a pipe -->
+                                <button class="dropdown-item"
+                                    (click)="addServiceToDashboard(component)">{{resolveComponentName(component)}}</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="noComponents && !isLoadingComponents || !isLoadingComponents && this.portalHosts.length === 0"
+                class="col-12 text-center no-components">
+                <h2>Your dashboard is empty!</h2>
+                <p>Click the <a (click)="servicesDrop.open()"><strong>Add Service</strong></a> button to start adding
+                    service modules to your dashboard.</p>
+            </div>
+            <div class="col-12">
+                <div class="row">
+                    <!-- Tiles Begin -->
+                    <!-- Dragula begin -->
+                    <div *ngIf="isLoadingComponents" class="col-12 text-center">
+                        <fa-icon [icon]="['fas', 'spinner']" size="5x" class="fa-spinner" spin="true"></fa-icon>
+                    </div>
+                    <div class="col-12">
+                        <div dragula="services-list" class="flexbox-container" [(dragulaModel)]="tnActiveComponents">
+                            <div *ngFor="let component of tnAvailableComponents; let i = index" class="tile-box"
+                                [ngClass]="{'no-border': isLoadingComponents || returnTileBox(i) || this.portalHosts.length === 0, 'bg-white': !isLoadingComponents }"
+                                [id]="['tile-box-'+ (i)]">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Dragula end -->
+                    <!-- Tiles End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

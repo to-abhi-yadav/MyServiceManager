@@ -1,0 +1,75 @@
+<!--TO DO: Design Improvements, Add to sidebar-->
+<div class="container onetimepayment">
+    <div class="row mb-2">
+      <div class="col">
+        <h4>Account Balance</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-2 col-md-6">
+          <p>Prior Balance:</p>
+      </div>
+      <div class="col-sm-8 col-md-4 text-right">
+        <p>${{priorBalance | number: '1.2'}}</p>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-sm-2 col-md-6">
+          <p>Current Billing:</p>
+      </div>
+      <div class="col-sm-8 col-md-4 text-right">
+        <p>${{currentBalance | number: '1.2'}}</p>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-sm-2 col-md-6">
+          <p>Payment Due:</p>
+      </div>
+      <div class="col-sm-8 col-md-4 text-right">
+        <p>${{paymentDue | number: '1.2'}}</p>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <p>Make One-Time Payment</p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7 text-left">
+        <p>Payment Amount:</p>
+      </div>
+      <div class="col-sm-4">
+        <input class="form-control" [(ngModel)]="paymentAmount"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <button class="btn btn-primary mt-3 btn-block" (click)="launchModal()">MAKE PAYMENT</button>
+      </div>
+    </div>
+    <div class="row">
+      
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-5 small">
+        Sign up for Autopay, or update billing info
+      </div>
+      <div class="col-5">
+        <button class="btn btn-primary btn-sm float-right">BILLING INFO</button>
+      </div>
+    </div>
+    <hr />
+    <div class="row">
+      <div class="col-5 small">
+        View and download paid invoices
+      </div>
+      <div class="col-5 text-right">
+        <button class="btn btn-primary btn-sm float-right">VIEW INVOICES</button>
+      </div>
+    </div>
+  </div>
+  <app-payment-form #paymentform [currentUser]="currentUser" [price]="paymentAmount"></app-payment-form>

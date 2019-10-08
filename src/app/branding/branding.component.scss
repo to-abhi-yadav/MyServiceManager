@@ -1,0 +1,39 @@
+.branding{
+    min-height: 95vh;
+    height: 95vh;
+}
+.fa-question-circle{
+    color: #FFBC00 !important;
+}
+.form-group-container{
+    border: 1px solid #E1E8EF;
+    height: 100%;
+}
+#page-content-wrapper{
+    height: 87vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+// .branding-options-form{
+//     overflow: scroll;
+// }
+.equal {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    flex-wrap: wrap;
+}
+.equal > [class*='col-'] {
+    display: flex;
+    flex-direction: column;
+}
+.upload-icon{
+    max-height: 100px;
+}
+// Small devices 
+@media (max-width: 576px) { 
+    :host {
+        width: 100%;
+    }
+}

@@ -1,0 +1,253 @@
+<div class="container regular-business-hours">
+  <div class="row mb-2">
+    <div class="col-6 text-center">
+      <p>
+        Step 1: Upload Announcement
+      </p>
+    </div>
+    <div class="col-6 text-center">
+      <p>
+        Step 2: Set Keys
+      </p>
+    </div>
+  </div>
+  <div class="row mb-2">
+    <div class="col-sm-6" style="background-color: lightgray; width: 590px">
+      <br />
+      <div class="row mb-2">
+        <div class="col-sm-6" style="font-size: 13px">
+          <input type="radio" name="input" (click)="enableTTS()"/> Text-to-Speech
+        </div>
+        <div class="col-sm-6" style="font-size: 13px" placement="top" ngbTooltip="Max File Size is 2MB. Accepted format is .wav">
+            <input type="radio" name="input" (click)="enableFileUpload()"/> File Upload
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-12 text-center" *ngIf="isFileUpload">
+          <input type="file" class="mw-100" #aaFile (change)="addFile(aaFile)" placeholder="Upload file" accept=".wav"/>
+        </div>
+        <div class="col-sm-12 text-center" *ngIf="isTTS">
+          <textarea [(ngModel)]="ttsMessage"></textarea>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-12 text-center">
+          <button class="btn btn-primary" (click)="uploadFile()" *ngIf="isFileUpload">SAVE</button>
+          <button class="btn btn-primary" (click)="getTTSPreviewFile()" *ngIf="isTTS">PREVIEW</button> 
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="ttsFileId&&isTTS">
+        <div class="col-sm-12 text-center">
+          <br>
+          <td class="d-none d-sm-table-cell">
+            <mat-basic-audio-player [audioUrl]="getTTSPreviewFileURL()"></mat-basic-audio-player>
+          </td>
+          <td class="d-none d-sm-table-cell pointer-cursor" style="padding-left: 8px; cursor: pointer;">
+            <fa-icon (click)="saveTTS()" [icon]="['fas', 'save']" size="lg" class="far fa-save"></fa-icon>
+          </td>
+          <br>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div *ngIf="!mAnnouncementID" class="col-sm-12 text-center">
+          <p>No announcement currently set.</p>
+        </div>
+        <div *ngIf="mAnnouncementID">
+            <div class="col-sm-12 text-center">
+              <p>You have an existing file.</p>
+            </div>
+            <div class="col-sm-12 text-center">
+              <td class="d-none d-sm-table-cell">
+                <mat-basic-audio-player [audioUrl]="getUploadFileURL()"></mat-basic-audio-player>
+              </td>
+              <td class="d-none d-sm-table-cell pointer-cursor" style="padding-left: 8px; cursor: pointer;">
+                <fa-icon (click)="downloadMAAFile()" [icon]="['fas', 'download']" size="lg" class="fa-download yellow"></fa-icon>
+                <fa-icon *ngIf="download" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+              </td>
+            </div>
+            <br>
+          </div>
+      </div>
+    </div>
+    <div class="col-sm-6">
+      <div *ngIf="hide">
+        <input type="number" (input)="onInputChange($event)" class="form-control" value={{value}}
+        class="mb-2 form-control" maxlength="2" placeholder="" />
+      </div>
+      <div class="simple-keyboard-three w-100"></div>
+    </div>
+  </div>
+</div>
+
+<ng-template #offBusContent let-offBusModal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Selected Key:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="offBusModal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row configuration ">
+      <div class="col-12">
+        <p class="text-center speed-dial-code">
+           {{value}}
+        </p>
+      </div>
+    </div>
+    <div class="row configuration">
+      <div class="col-12 text-center">
+      <p>Select the action for this key: </p>
+      <mat-form-field>
+        <mat-select [(value)]="action">
+          <mat-option value="no_mapping">No Mapping</mat-option>
+          <mat-option value="transfer">Transfer</mat-option>
+          <mat-option value="announce-return">Announce-Return</mat-option>
+          <mat-option value="announce-release">Announce-Release</mat-option>
+          <mat-option value="release">Release</mat-option>
+        </mat-select>
+      </mat-form-field>
+      </div>
+    </div>
+    <div *ngIf="action==='no_mapping'" class="row configuration">
+      <div class="col-12 text-center">
+        <p>This number will not be mapped to an action.</p>
+      </div>
+    </div>
+    <div *ngIf="action==='transfer'" class="row configuration">
+      <div class="col-12 text-center">
+        <p>Transfer the caller to another number</p>
+        <input class="form-control" [(ngModel)]="transferNumber" required [maxLength]="10">
+      </div>
+    </div>
+    <div *ngIf="action==='announce-return'">
+      <div class="row mb-2">
+        <div class="col-12 text-center">
+          <p>Plays the caller the configured announcement then returns them to the menu. 
+            For example, "Our office is located at 101 South Main Street, three blocks 
+            south of the Pallisades Parkway." </p>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div *ngIf="!announcementId" class="col-sm-12 text-center">
+          <p>No announcement currently set.</p>
+        </div>
+        <div *ngIf="announcementId&&showPlayer" class="col-sm-12 text-center">
+          <p>You have an existing file.</p>
+          <div class="col-sm-12 text-center" style="padding-left: 85px">
+            <td class="d-none d-sm-table-cell">
+              <mat-basic-audio-player [audioUrl]="getKeyUploadFileURL()"></mat-basic-audio-player>
+            </td>
+            <td class="d-none d-sm-table-cell pointer-cursor" style="padding-left: 8px; cursor: pointer;">
+                <fa-icon (click)="downloadAAFile()" [icon]="['fas', 'download']" size="lg" class="fa-download yellow"></fa-icon>
+                <fa-icon *ngIf="download" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+            </td>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row mb-2">
+        <div class="col-sm-6" style="font-size: 14px">
+          <input type="radio" name="input" (click)="enableAReturnTTS()"/> Text-to-Speech
+        </div>
+        <div class="col-sm-6" style="font-size: 14px" placement="top" ngbTooltip="Max File Size is 2MB. Accepted format is .wav">
+            <input type="radio" name="input" (click)="enableAReturnFileUpload()"/> File Upload
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-12 text-center" *ngIf="isAReturnFileUpload">
+          <input type="file" #AAFile (change)="addFile(AAFile)" placeholder="Upload file" accept=".wav"/>
+        </div>
+        <div class="col-sm-12 text-center" *ngIf="isAReturnTTS">
+          <textarea [(ngModel)]="AReturnttsMessage"></textarea>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-12 text-center">
+          <button class="btn btn-primary" (click)="uploadAAFile()" *ngIf="isAReturnFileUpload">SAVE</button>
+          <button class="btn btn-primary" (click)="getAReturnTTSPreviewFile()" *ngIf="isAReturnTTS">PREVIEW</button> 
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="AReturnTtsFileId&&isAReturnTTS" style="padding-left: 85px">
+        <div class="col-sm-12 text-center">
+          <br>
+          <td class="d-none d-sm-table-cell">
+            <mat-basic-audio-player [audioUrl]="getAReturnTTSPreviewFileURL()"></mat-basic-audio-player>
+          </td>
+          <td class="d-none d-sm-table-cell pointer-cursor" style="padding-left: 8px; cursor: pointer;">
+            <fa-icon (click)="saveAReturnTTS()" [icon]="['fas', 'save']" size="lg" class="far fa-save"></fa-icon>
+          </td>
+          <br>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="action==='announce-release'">
+      <div class="col-12 text-center">
+        <p>Plays the caller the configured announcement and then releases the call (hangs up).</p>
+      </div>
+      <div class="row mb-2">
+        <div *ngIf="!announcementId" class="col-sm-12 text-center">
+          <p>No announcement currently set.</p>
+        </div>
+        <div *ngIf="announcementId&&showPlayer" class="col-sm-12 text-center">
+          <p>You have an existing file.</p>
+          <div class="col-sm-12 text-center" style="padding-left: 85px">
+            <td class="d-none d-sm-table-cell">
+              <mat-basic-audio-player [audioUrl]="getKeyUploadFileURL()"></mat-basic-audio-player>
+            </td>
+            <td class="d-none d-sm-table-cell pointer-cursor" style="padding-left: 8px; cursor: pointer;">
+              <fa-icon (click)="downloadAAFile()" [icon]="['fas', 'download']" size="lg" class="fa-download yellow"></fa-icon>
+              <fa-icon *ngIf="download" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+            </td>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row mb-2">
+        <div class="col-sm-6" style="font-size: 14px">
+          <input type="radio" name="input" (click)="enableAReleaseTTS()"/> Text-to-Speech
+        </div>
+        <div class="col-sm-6" style="font-size: 14px" placement="top" ngbTooltip="Max File Size is 2MB. Accepted format is .wav">
+            <input type="radio" name="input" (click)="enableAReleaseFileUpload()"/> File Upload
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-12 text-center" *ngIf="isAReleaseFileUpload">
+          <input type="file" #AAFile (change)="addFile(AAFile)" placeholder="Upload file" accept=".wav"/>
+        </div>
+        <div class="col-sm-12 text-center" *ngIf="isAReleaseTTS">
+          <textarea [(ngModel)]="AReleasettsMessage"></textarea>
+        </div>
+      </div>
+      <div class="row mb-2">
+        <div class="col-sm-12 text-center">
+          <button class="btn btn-primary" (click)="uploadAAFile()" *ngIf="isAReleaseFileUpload">SAVE</button>
+          <button class="btn btn-primary" (click)="getAReleaseTTSPreviewFile()" *ngIf="isAReleaseTTS">PREVIEW</button> 
+        </div>
+      </div>
+      <div class="row mb-2" *ngIf="AReleaseTtsFileId&&isAReleaseTTS" style="padding-left: 85px">
+        <div class="col-sm-12 text-center">
+          <br>
+          <td class="d-none d-sm-table-cell">
+            <mat-basic-audio-player [audioUrl]="getAReleaseTTSPreviewFileURL()"></mat-basic-audio-player>
+          </td>
+          <td class="d-none d-sm-table-cell pointer-cursor" style="padding-left: 8px; cursor: pointer;">
+            <fa-icon (click)="saveAReleaseTTS()" [icon]="['fas', 'save']" size="lg" class="far fa-save"></fa-icon>
+          </td>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="action==='release'" class="row configuration">
+      <div class="col-12 text-center">
+        <p>Hangs up on the caller and ends the call.</p>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col-xs-4 footerCol text-center">
+        <button type="button" class="btn btn-primary" (click)="setAA()">
+            <span *ngIf="!saving">Submit</span>
+            <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+        </button>
+    </div>
+  </div>
+</ng-template>

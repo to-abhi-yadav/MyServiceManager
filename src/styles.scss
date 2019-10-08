@@ -1,0 +1,281 @@
+@import "~bootstrap/dist/css/bootstrap.min.css";
+/* You can add global styles to this file, and also import other style files */
+// Font Import
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700');
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import './assets/stylesheets/dragula.css';
+@import "~ng-pick-datetime/assets/style/picker.min.css";
+@import "./assets/stylesheets/global.scss";
+
+// SCSS Variables
+$big-river-blue: #3274b7;
+$big-river-dark-blue: #385F80;
+$big-river-gold: #FFBC00;
+$big-river-body-bg: #F8F9FA;
+$font-stack: 'Open-Sans', sans-serif;
+$big-river-text: #666666;
+$big-river-gray: #96B0BA;
+$big-river-borders: #E1E8EF;
+
+// SCSS default color variables
+$background-color: var(--backgroundColor);
+$primary-button-bg: var(--primaryButtonColor);
+$secondary-button-bg: var(--secondaryButtonColor);
+$primary-font-color: var(--primaryFontColor);
+$secondary-font-color: var(--secondaryFontColor);
+$tagline-font-color: var(--taglineFontColor);
+
+@if $background-color != '' {
+    .app-container{
+        background-image: none;
+        background-color: $background-color;
+        background-repeat: no-repeat;
+        background-size: cover;
+        min-height: 100vh;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        // customer scss helpers
+    }
+} @else {
+    .app-container{
+        background-image: url('./assets/images/big-river-background.jpg');
+        background-color: none;
+        background-repeat: no-repeat;
+        background-size: cover;
+        min-height: 100vh;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        // customer scss helpers
+    }
+}
+
+
+// branding option variables
+
+
+a.nav-link{
+    color:  $primary-font-color !important;
+    cursor: pointer;
+}
+a{
+    cursor: pointer;
+    color: $primary-font-color !important;
+}
+a.handle{
+    cursor: move;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+body {
+    font-family: $font-stack;
+    font-weight: normal;
+    color: $primary-font-color;
+    width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+h1, h2, h3, h4, h5, h6 {
+    cursor: default;
+    font-weight: 300;
+    color: $secondary-font-color;
+}
+.no-scroll {
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+}
+.navbar-toggler-icon{
+    color: grey !important;
+}
+.ng-fa-icon {
+    color: $big-river-gray;
+}
+.fa-user-circle{
+    color: #EAECEE !important;
+}
+.tagline-font-color{
+    color: $tagline-font-color;
+}
+.br-gold{
+    color: $big-river-gold !important;
+}
+// .container{
+//     background-color: $big-river-body-bg;
+// }
+
+.full-width-row{
+    margin-left: -15px;
+    margin-right: -15px;
+}
+.full-width-col{
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
+
+// color classes
+.primary-font-color{
+    color: $primary-font-color;
+}
+.secondary-font-color{
+    color: $secondary-font-color;
+}
+.primary-btn{
+    background-color: $primary-button-bg;
+    color: white;
+    min-width: 140px;
+    font-weight: 600;
+    font-size: 0.875em;
+    text-transform: uppercase;
+}
+.primary-btn:hover{
+    background-color: $secondary-font-color;
+    color: white;
+}
+
+// primary download btn
+
+.primary-download-btn{
+    background-color: $primary-button-bg;
+    color: white;
+    min-width: 140px;
+    font-weight: 600;
+    font-size: 0.875em;
+    text-transform: uppercase;
+}
+.primary-download-btn:hover{
+    background-color: $secondary-font-color;
+    color: white;
+}
+
+// button overides
+.btn-outline-primary{
+    color: $secondary-button-bg !important;
+    border-color: $secondary-button-bg !important;
+}
+.btn-outline-primary:hover{
+    background:  transparent !important;
+    border-color:  $secondary-button-bg !important;
+    color: $secondary-button-bg !important;
+}
+.btn-outline-primary:active {
+    background:  transparent !important;
+    border-color:  $primary-button-bg !important;
+    color: white !important;
+}
+.btn-outline-primary:focus {
+    background:  transparent !important;
+    border-color:  $secondary-button-bg!important;
+    color: $secondary-button-bg !important;
+}
+.btn-primary{
+    background: $primary-button-bg !important;
+    border-color:  $primary-button-bg !important;
+    color: white;
+}
+
+.secondary-btn{
+    background-color: $secondary-button-bg;
+    color: white;
+    width: 140px;
+    font-weight: 600;
+    font-size: 0.875em;
+
+}
+.secondary-btn:hover{
+    background-color: $secondary-font-color;
+    color: white;
+}
+.default-border{
+    border-color: $big-river-borders;
+}
+
+// buttons
+.br-btn{
+    background-color: $primary-button-bg;
+    color: white;
+    width: 150px;
+}
+
+// customer scss helpers
+.mw-300{
+    max-width: 300px;;
+}
+
+.mw-100{
+    max-width: 100%;
+}
+
+// dropdown menu
+.dropdown-menu{
+    border-color: $big-river-gray;
+    border-bottom-color: $secondary-font-color;
+    border-bottom-width: 4px;
+    color: $secondary-font-color;
+}
+.dropdown-item{
+    color: #212529;
+}
+.dropdown-item:hover{
+    background: $secondary-font-color !important;
+    color: white !important;
+}
+.dropdown-item:active{
+    background: $secondary-font-color !important;
+    color: white !important;
+}
+
+.no-scroll {
+    overflow: hidden !important;
+    overflow-y: hidden !important;
+}
+
+// tilebox styling conditionals
+.tilebox{
+    background:white;
+}
+.tilebox.no-border{
+    background: $big-river-body-bg !important;
+}
+
+.tooltip-yellow{
+    background: yellow !important;
+}
+// global container sizing
+@media screen and (min-width: 1200px){
+    .container{
+        min-width: 95% !important;
+        max-width: 95% !important;
+    }
+}
+@media screen and (max-width: 1199px){
+    .callrecordscomponent, .voicemailcomponent {
+        .container{
+            max-width: 100% !important;
+            min-width: 100%;;
+        }
+    }
+}
+
+
+
+// configuration menu
+.configuration {
+    .menu {
+        margin-right: -15px;
+        padding-right: -15px;
+    }
+}
+
+//material tabs
+.mat-tab-label-active {
+    background-color: lightgrey !important;
+}
+// @media (min-width: 576px) {
+//     .container {
+//         max-width: 95vw;
+//     }
+    
+// }

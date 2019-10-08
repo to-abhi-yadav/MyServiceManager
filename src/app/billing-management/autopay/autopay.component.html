@@ -1,0 +1,101 @@
+<div class="container invoices bg-white">
+  <div class="content">
+      <div class="row full-width-row bg-white">
+          <div class="col-12 full-width-col" style="height: 67px;">
+              <app-header class="bg-white" style="height: 67px;"></app-header>
+          </div>
+          <div class="d-flex col-12 full-width-row">
+            <!-- Sidebar -->
+            <app-sidebar></app-sidebar>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div class="container-fluid" id="page-content-wrapper">
+              <div>
+                <div class="p-lg-3">
+                  <div class="row configuration">
+                      <strong>
+                          <h1 class="mt-4">
+                            Autopay
+                            
+                          </h1> 
+                        </strong>
+                  </div>
+				  <div class="row configuration mb-2">
+      <div class="col-6 text-left">
+        <p>
+            Autopay will take effect on the next billing cycle.
+        </p>
+      </div>
+    </div>
+    <hr />
+    <div class="col-12" *ngIf="isLoadingAutopay">
+      <div class="row align-items-center">
+        <div class="col text-center spinner">
+          <fa-icon [icon]="['fas', 'spinner']" size="5x" class="fa-spinner" spin="true"></fa-icon>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="!isLoadingAutopay">
+      <div class="row">
+        <div class="col-6 text-left">
+          <p>
+            Email Address:
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 text-left">
+          <input [disabled]="autopayEnable" style="width: 400px" [(ngModel)]="email"/>
+        </div>
+      </div>
+      <hr />
+      <div class="row" *ngIf="isLoadingAutopay">
+        <div class="col text-center spinner">
+          <fa-icon [icon]="['fas', 'spinner']" size="5x" class="fa-spinner" spin="true"></fa-icon>
+        </div>
+      </div>
+      <div class="row" *ngIf="autopayEnable">
+        <div class="col-sm-2 col-md-2">
+          <p>
+            Card Number
+          </p>
+        </div>
+        <div class="col-sm-2 col-md-2">
+          <p>
+            Expiration
+          </p> 
+        </div>
+      </div>
+      <div class="row" *ngIf="autopayEnable">
+        <div class="col-sm-2 col-md-2">
+          <p>
+            *{{lastFour}}
+          </p>
+        </div>
+        <div class="col-sm-2 col-md-2">
+          <p>
+            {{expirationDate}}
+          </p>
+        </div>
+        <div class="col-sm-2 col-md-2">
+          <fa-icon [icon]="['fas', 'edit']" size="lg" (click)="launchModalUpdate()" class="fa-edit" ><button></button></fa-icon>
+        </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-6 text-center">
+          <button class="btn btn-primary btn-block" (click)="isRegistrationAutopay = true; launchModalRegister() " [disabled]="autopayEnable">START AUTOPAY</button>
+        </div>
+      </div>
+    </div>
+    
+                </div>
+                </div>
+                
+              </div>
+          </div>
+              <!-- /#page-content-wrapper -->
+          </div>
+      </div>
+  </div>
+  <app-autopay-form #autopayform [currentUser]="currentUser" [email]="email"></app-autopay-form>

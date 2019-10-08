@@ -1,0 +1,8 @@
+<div style="position: relative; cursor: pointer;">
+    <div ngbDropdown placement="left" style="position: absolute; top: 0; right: -25px; z-index: 100;">
+        <a ngbDropdownToggle   role="button"><fa-icon [icon]="['fas', 'ellipsis-v']" size="1x" class="fa-ellipsis-v"></fa-icon></a>
+        <div ngbDropdownMenu aria-labelledby="menuDropdown">
+            <button class="dropdown-item" (click)="removeComponent(component)">Remove From Dashboard</button>
+        </div>
+    </div>
+</div>

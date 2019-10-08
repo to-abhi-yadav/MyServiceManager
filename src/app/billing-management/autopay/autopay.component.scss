@@ -1,0 +1,12 @@
+:host{
+    width: 300px;
+}
+
+// CSS for sliders
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: #8383f1;
+}
+
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: #3535ca;
+}

@@ -1,0 +1,27 @@
+
+<div class="container internationalminutes">
+    <app-six-dot-drag></app-six-dot-drag>
+    <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+    <div class="row mb-2">
+        <div class="col d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature shows you the number of international minutes been used."></app-tooltip-icon>
+            <h5>International Minutes</h5>
+        </div>
+        <div class="col-12">
+          <hr>
+        </div>
+    </div>
+    <div class="row text-center" *ngIf="hasError" >
+      <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+          <p>{{errorMsg}}</p>
+      </div>
+    </div>
+    <div class="row" *ngIf="!hasError" >
+      <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-left">
+        <h1>{{internationalminutes}}</h1>
+      </div>
+      <div class="col-8 col-sm-8 col-sm-8 col-lg-8 text-right text-center">
+        <p> / 200.0</p>
+      </div>
+    </div>
+  </div>

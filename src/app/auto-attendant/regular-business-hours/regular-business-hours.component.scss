@@ -1,0 +1,20 @@
+:host {
+    background: red;
+    min-width: 375px;
+}
+#instructions{
+    .force-bottom{
+        position: absolute;
+        bottom: 0;
+    }
+}
+.speed-dial-code{
+    font-size: 5rem;
+    font-weight: 800;
+}
+.addDialPadHighlight{
+    background: yellow;
+    color: yellow;
+}
+
+@import './number-pad-AA.scss'

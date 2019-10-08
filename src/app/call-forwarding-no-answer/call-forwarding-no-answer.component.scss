@@ -1,0 +1,16 @@
+@import "../../../src/assets/stylesheets/global.scss";
+// CSS for sliders
+:host{
+    width: 425px;
+}
+
+.settingsRowCol {
+    width: 100%;
+    padding-right:10px;
+}
+// Small devices 
+@media (max-width: 576px) { 
+    :host {
+        width: 100%;
+    }
+}

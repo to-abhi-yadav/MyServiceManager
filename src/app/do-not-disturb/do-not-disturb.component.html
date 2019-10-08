@@ -1,0 +1,44 @@
+<div class="container">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div class="row configuration mb-2">
+      <div class="col d-inline-flex">
+          <app-tooltip-icon tooltipText="This feature allows the subscriber to temporarily block the 
+          line to prevent incoming calls. Outgoing calls can still be made as normal, but incoming calls 
+          are not connected. Instead, the caller hears an announcement that the subscriber is not 
+          currently accepting calls."></app-tooltip-icon>
+          <h5>Do Not Disturb</h5>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+  </div>
+  <div class="row configuration mb-2">
+      <div class="col-6">
+        <p>Enable</p>
+      </div>
+      <div class="col-6 text-right">
+          <mat-slide-toggle
+          #enabled
+          [checked]="enabledStatus"
+          (change)="checkEnabledStatus();">
+          </mat-slide-toggle>
+      </div>
+  </div>
+  <div class="row configuration">
+      <div class="col-lg-8 text-left">
+        <p>
+          Single Ring
+        </p>
+      </div>
+      <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-left">
+          <mat-slide-toggle 
+            [disabled]="!enabledStatus"
+            #singleRing
+            [checked]="singleRingStatus"
+            (change)="checkSingleRingStatus()"
+            style="float: right;">
+          </mat-slide-toggle>
+      </div>
+  </div>
+</div>

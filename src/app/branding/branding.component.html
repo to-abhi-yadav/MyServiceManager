@@ -1,0 +1,205 @@
+<div class="container branding bg-white">
+    <div class="content">
+        <div class="row full-width-row bg-white">
+            <div class="col-12 full-width-col" style="height: 67px;">
+                <app-header class="bg-white" style="height: 67px;"></app-header>
+            </div>
+            <div class="d-flex col-12 full-width-row">
+                <!-- Sidebar -->
+                <app-sidebar></app-sidebar>
+                <!-- /#sidebar-wrapper -->
+                <!-- Page Content -->
+                <div class="container-fluid" id="page-content-wrapper">
+
+                <div class="p-lg-3">
+                    <h1 class="mt-4">Branding Options</h1>
+                    <hr>
+                    <form [hidden]="submitting" class="branding-options-form" [formGroup]="brandingOptionsForm" novalidate>
+                        <div class="row equal">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <!-- logo upload -->
+                                <div class="form-group-container p-4">
+                                        <div class="d-inline-flex" placement="top" ngbTooltip="This feature allows you to set the company logo that will be displayed on the user account and log in page.">
+                                            <fa-icon [icon]="['far', 'question-circle']" size="lg" class="mr-2 fa-question-circle"></fa-icon>
+                                            <h4>Logo Upload</h4>
+                                        </div>
+                                                <div class="form-group image-upload">
+                                                    <div class="upload-container">
+                                                        <img class="upload-icon"
+                                                            src="/assets/images/icon-profile-pic.png"
+                                                             *ngIf="!brandingOptionsForm.get('logo').value"
+                                                            alt="Logo Icon">
+                                                        <img class="upload-icon"
+                                                             *ngIf="brandingOptionsForm.get('logo').value"
+                                                            [src]="brandingOptionsForm.get('logo').value"
+                                                            alt="Logo">
+                                    
+                                                        <input type="file"
+                                                            id="logo"
+                                                            (change)="onSelectLogo($event)"
+                                                        >
+                                    
+                                                        <!-- <label for="logo"
+                                                            class="file-button"
+                                                               *ngIf="!brandingOptionsForm.get('logo').value">
+                                                            Choose File
+                                                        </label> -->
+                                                        <label for="logo" class="file-button"
+                                                               *ngIf="brandingOptionsForm.get('logo').value"
+                                                            (click)="onRemoveLogo()"
+                                                        >
+                                                            Remove
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                                <div class="text-center input-field" *ngIf="logoChangedEvent">
+                                                    <div class="image-cropper mt-2">
+                                                        <image-cropper format="png"
+                                                                    [imageChangedEvent]="logoChangedEvent"
+                                                                    [maintainAspectRatio]="false"
+                                                                    [aspectRatio]="4 / 2"
+                                                                    [resizeToWidth]="200"
+                                                                    (imageCroppedBase64)="onLogoCropChanged($event)"
+                                                        ></image-cropper>
+                                                        <button class="btn btn-outline-success"
+                                                                (click)="onLogoCropClicked()">
+                                                            Crop
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                </div>
+                                <!-- end of logo upload -->
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4 mt-2 mt-lg-0">
+                                <!-- font color options -->
+                                <div class="form-group-container p-4">
+                                        <div class="d-inline-flex" placement="top" ngbTooltip="Tooltip on top">
+                                            <fa-icon [icon]="['far', 'question-circle']" size="lg" class="mr-2 fa-question-circle"></fa-icon>
+                                                <h4>Font Options</h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Choose Font:</label>
+                                                <select class="form-control" formControlName="fontFamily">
+                                                    <option *ngFor="let font of fonts" [ngValue]="font" placeholder="Font Family">{{font}}</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Choose Primary Font Color:</label><br>
+                                                <div class="col-12 m-0 p-0 d-inline-flex">
+                                                    <label class="label mr-2">Color: </label>
+                                                    <input class="form-control" formControlName="primaryFontColor" (colorPickerChange)="brandingOptionsForm.get('primaryFontColor').setValue($event)" [colorPicker]="brandingOptionsForm.get('primaryFontColor').value" [cpPosition]="'bottom'" [style.background]="brandingOptionsForm.get('primaryFontColor').value"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Choose Secondary Font Color:</label><br>
+                                                <div class="col-12 m-0 p-0 d-inline-flex">
+                                                    <label class="label mr-2">Color: </label>
+                                                    <input class="form-control" formControlName="secondaryFontColor" (colorPickerChange)="brandingOptionsForm.get('secondaryFontColor').setValue($event)" [colorPicker]="brandingOptionsForm.get('secondaryFontColor').value" [cpPosition]="'bottom'" [style.background]="brandingOptionsForm.get('secondaryFontColor').value"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <!-- end of font color options -->
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4 mt-2 mt-lg-0">
+                                <div class="form-group-container p-4">
+                                    <div class="d-inline-flex" placement="top" ngbTooltip="Tooltip on top">
+                                        <fa-icon [icon]="['far', 'question-circle']" size="lg" class="mr-2 fa-question-circle"></fa-icon>
+                                        <h4>Forwarding URL/Domain</h4>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Forwarding URL:</label>
+                                        <input type="text" class="form-control" formControlName="forwardingUrl">
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Domain Name:</label>
+                                        <input type="text" class="form-control" formControlName="domainName">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row equal">
+                            <div class="col-12 col-md-6 col-lg-4 mt-2 mt-lg-0">
+                                <!-- tagline options -->
+                                <div class="form-group-container mt-4 p-4">
+                                        <div class="d-inline-flex" placement="top" ngbTooltip="Tooltip on top">
+                                            <fa-icon [icon]="['far', 'question-circle']" size="lg" class="mr-2 fa-question-circle"></fa-icon>
+                                            <h4>Tagline Options</h4>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="label">Enter Tagline:</label><br>
+                                            <input type="text" class="form-control" formControlName="tagline" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="label">Choose Font:</label>
+                                            <select class="form-control" formControlName="taglineFont">
+                                                <option *ngFor="let font of fonts" [ngValue]="font" placeholder="Font Family">{{font}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="label">Choose Font Color:</label><br>
+                                            <div class="col-12 m-0 p-0 d-inline-flex">
+                                                <label class="label mr-2">Color: </label>
+                                                <input class="form-control" formControlName="taglineFontColor" (colorPickerChange)="brandingOptionsForm.get('taglineFontColor').setValue($event)" [colorPicker]="brandingOptionsForm.get('taglineFontColor').value" [cpPosition]="'bottom'" [style.background]="brandingOptionsForm.get('taglineFontColor').value"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- end of tagline options -->
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4 mt-2 mt-lg-0">
+                                    <!-- tagline options -->
+                                    <div class="form-group-container mt-4 p-4">
+                                            <div class="d-inline-flex" placement="top" ngbTooltip="Tooltip on top">
+                                                <fa-icon [icon]="['far', 'question-circle']" size="lg" class="mr-2 fa-question-circle"></fa-icon>
+                                                <h4>Button Options</h4>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="label">Primary Button Color:</label><br>
+                                                <div class="col-12 m-0 p-0 d-inline-flex">
+                                                    <label class="label mr-2">Color: </label>
+                                                    <input class="form-control" formControlName="primaryButtonColor" (colorPickerChange)="brandingOptionsForm.get('primaryButtonColor').setValue($event)" [colorPicker]="brandingOptionsForm.get('primaryButtonColor').value" [cpPosition]="'bottom'" [style.background]="brandingOptionsForm.get('primaryButtonColor').value"/>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                    <label class="label">Secondary Button Color:</label><br>
+                                                    <div class="col-12 m-0 p-0 d-inline-flex">
+                                                        <label class="label mr-2">Color: </label>
+                                                        <input class="form-control" formControlName="secondaryButtonColor" (colorPickerChange)="brandingOptionsForm.get('secondaryButtonColor').setValue($event)" [colorPicker]="brandingOptionsForm.get('secondaryButtonColor').value" [cpPosition]="'bottom'" [style.background]="brandingOptionsForm.get('secondaryButtonColor').value"/>
+                                                    </div>
+                                            </div>
+                                        </div>
+                                        <!-- end of tagline options -->
+                                </div>
+                                <div class="col-12 col-md-6 col-lg-4 mt-2 mt-lg-0">
+                                        <!-- tagline options -->
+                                        <div class="form-group-container mt-4 p-4">
+                                                <div class="d-inline-flex" placement="top" ngbTooltip="Tooltip on top">
+                                                    <fa-icon [icon]="['far', 'question-circle']" size="lg" class="mr-2 fa-question-circle"></fa-icon>
+                                                    <h4>Background Options</h4>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="label">Background Color:</label><br>
+                                                    <div class="col-12 m-0 p-0 d-inline-flex">
+                                                        <label class="label mr-2">Color: </label>
+                                                        <input class="form-control" formControlName="backgroundColor" (colorPickerChange)="brandingOptionsForm.get('backgroundColor').setValue($event)" [colorPicker]="brandingOptionsForm.get('backgroundColor').value" [cpPosition]="'bottom'" [style.background]="brandingOptionsForm.get('backgroundColor').value"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end of tagline options -->
+                                    </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12 mt-4">
+                                <button class="btn-primary btn-lg" (click)="saveBrandingOptions()">Save Settings</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div *ngIf="hasError" class="text-center">
+                        <p class="text-danger">There was an error updating the branding options!</p>
+                    </div>
+                </div>
+                </div>
+                <!-- /#page-content-wrapper -->
+            </div>
+        </div>
+    </div>
+</div>

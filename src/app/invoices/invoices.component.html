@@ -1,0 +1,63 @@
+<div class="container invoices bg-white">
+  <div class="content">
+      <div class="row full-width-row bg-white">
+          <div class="col-12 full-width-col" style="height: 67px;">
+              <app-header class="bg-white" style="height: 67px;"></app-header>
+          </div>
+          <div class="d-flex col-12 full-width-row">
+            <!-- Sidebar -->
+            <app-sidebar></app-sidebar>
+            <!-- /#sidebar-wrapper -->
+            <!-- Page Content -->
+            <div class="container-fluid" id="page-content-wrapper">
+              <div *ngIf="hasError">
+                <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+                  <p>{{errorMsg}}</p>
+                </div>
+              </div>
+              <div *ngIf="!hasError">
+                <div class="p-lg-3">
+                  <div class="row configuration">
+                      <strong>
+                          <h1 class="mt-4">
+                            Invoices
+                            <fa-icon *ngIf="isDownloading" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+                            <fa-icon *ngIf="isToggling" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+                          </h1> 
+                        </strong>
+                        <hr>
+                  </div>
+                </div>
+                <hr />
+                <div class="row text-center" *ngIf="isToggling" >
+                  <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+                      <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+                  </div>
+                </div>
+                <div class="form-group-container p-4" *ngIf="!isToggling">
+                  <table class="table table-striped table-responsive">
+                    <thead>
+                      <tr class="text-center">
+                          <th scope="col" class="header-text">Bill Month</th>
+                          <th scope="col" class="header-text">Download</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr class="text-center" *ngFor="let billMonth of billMonths">
+                        <td>
+                          {{billMonth}}
+                        </td>
+                        <td (click)="downloadInvoice(billMonth)">
+                            <fa-icon [icon]="['fas', 'download']" size="lg" class="fa-download yellow"></fa-icon>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+              <!-- /#page-content-wrapper -->
+          </div>
+      </div>
+  </div>
+</div>

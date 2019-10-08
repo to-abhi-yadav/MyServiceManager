@@ -1,0 +1,52 @@
+<div class="container login" id="user-login">
+  <div class="row content">
+    <div class="col-sm-12 bg-white p-2 text-center pt-5">
+      <img [src]="logo" class="mw-300 mb-5" />
+      <div class="row mt-3">
+        <div class="col text-center">
+          <form class="login-form p-3 border" (ngSubmit)="submitForm()" [formGroup]="loginForm">
+            <ngb-alert *ngIf="error" type="danger" (close)="error = null">{{ error }}</ngb-alert>
+            <ngb-alert class="text-center" *ngIf="errorMsg" type="danger" (close)="errorMsg = null">{{ errorMsg }}
+            </ngb-alert>
+            <div class="form-group">
+              <label class="float-left" for="userName">Username</label>
+              <input [ngClass]="{'is-invalid': hasError && loginForm.get('userName').errors}" class="form-control"
+                type="userName" id="userName" formControlName="userName">
+              <label class="form-error float-left" *ngIf="hasError && loginForm.get('userName').errors">
+                <span class="text-danger" *ngIf="loginForm.get('userName').errors['required']">
+                  Username is required!
+                </span>
+              </label>
+            </div>
+            <br *ngIf="hasError" />
+            <div class="form-group">
+              <label class="float-left" for="password">Password</label>
+              <input [ngClass]="{'is-invalid': hasError && loginForm.get('password').errors}" class="form-control"
+                type="password" id="password" formControlName="password">
+                <label class="form-error float-left" *ngIf="hasError && loginForm.get('password').errors">
+                  <span class="text-danger" *ngIf="loginForm.get('password').errors['required']">
+                    Password is required!
+                  </span>
+                </label>
+            </div>
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" id="exampleCheck1">
+              <label class="form-check-label" for="exampleCheck1">Remember Me</label>
+            </div>
+            <div class="form-footer-btns mt-2 mb-2">
+              <button type="submit" class="btn primary-btn">Log in <fa-icon
+                *ngIf="submitting" [icon]="['fas', 'spinner']" size="lg" class="ml-2 fa-spinner" spin="true"></fa-icon>
+              </button>
+            </div>
+            <a class="small" [routerLink]="['/password-reset']">Forgot Password</a>
+          </form>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12 text-center">
+          <p class="small">Don't have an account? <a [routerLink]="['/signup']">Register here</a>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

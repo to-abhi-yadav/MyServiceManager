@@ -1,0 +1,57 @@
+<div class="container call-forwarding-busy">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div *ngIf="hasError">
+    <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+      <p>{{errorMsg}}</p>
+    </div>
+  </div>
+  <div *ngIf="!hasError">
+    <div class="row configuration mb-2">
+        <div class="col d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature forwards incoming calls to another number when the original number is busy."></app-tooltip-icon>
+            <h5>Call Forwarding Busy</h5>
+        </div>
+        <div class="col-12">
+          <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-lg-8 text-left">
+            <p>Enable</p>
+        </div>
+        <div class ="col-6 col-lg-4 text-right">
+            <mat-slide-toggle
+            [checked]="isEnabled"
+            (change)="toggleEnabledStatus()">
+            </mat-slide-toggle>
+        </div>
+    </div>
+    <div class="row text-center" *ngIf="isToggling" >
+      <div class="col-12 text-center">
+          <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+      </div>
+    </div>
+    <div class="row" *ngIf="!isToggling" >
+      <div *ngIf="isEnabled">
+        <div class="col-10 text-left">
+            <p>
+                Forwarding Number
+            </p>
+        </div>
+        <div class="col-12">
+          <input [(ngModel)]="forwardingNumber" [value]="forwardingNumber | phone: 'US'" class="form-control forwardEmail">
+        </div>
+        <div class="col-12 mt-3">
+          <button type="button" class="btn btn-primary" (click)="setCallForwardingBusy()">
+              <span *ngIf="!saving">SAVE SETTINGS</span>
+              <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+          </button>
+        </div>
+        <div *ngIf="forwardingNumberCheck" class="col-12 mt-3">
+              <p>Forwarding To: {{forwardingNumber | phone: 'US'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

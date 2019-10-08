@@ -1,0 +1,25 @@
+th, td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.pointer-cursor {
+  cursor: pointer;
+}
+
+// ======= Audio player =======
+audio {
+  width: 230px;
+}
+
+audio::-webkit-media-controls-timeline {
+  display:none;
+}
+
+.btn-outline-primary:hover{
+  background-color: transparent;
+}
+
+.green {
+  color: green;
+}

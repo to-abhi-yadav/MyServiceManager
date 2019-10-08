@@ -1,0 +1,174 @@
+<div class="container">
+    <app-six-dot-drag></app-six-dot-drag>
+    <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+    <div class="row mb-2">
+        <div class="col-6 d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature displays the broadband usage for each bill cycle."></app-tooltip-icon>
+            <h5>Broadband Usage</h5>
+        </div>
+        <div class="col-6 col-sm-6">
+            <div class="float-right">
+                <button type="button" (click)="openLg(content)" class="btn btn-primary">
+                    <fa-icon [icon]="['fas', 'cog']" size="1x" class="fa-cog"></fa-icon>
+                    NOTIFICATION
+                </button>
+            </div>
+        </div>
+        <div class="col-12">
+            <hr>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-6 col-lg-8">
+            <h6><p>Package: {{productName}}</p></h6>
+        </div>
+    </div>
+    <div class="row configuration">
+        <div class="col-sm-8 col-md-8 text-right" >  
+            <select class="hideLabel form-control" [(ngModel)]="monthDropdownValue" (change)="changeSelectedMonth()">
+                <option [ngValue]="month.Month" *ngFor="let month of dataUsageMonths">  
+                    {{month.StartDate}} - {{month.EndDate}}  
+                </option>  
+            </select>  
+        </div>    
+    </div>
+    <br />   
+    <div class="row configuration" *ngIf="isLoadingData" >
+        <div class="col-12">
+            <div class="row align-items-center">
+                <div class="col text-center spinner">
+                    <fa-icon [icon]="['fas', 'spinner']" size="5x" class="fa-spinner" spin="true"></fa-icon>
+                </div>
+            </div>
+        </div>
+    </div> 
+    <div class="row configuration" *ngIf="!isLoadingData">
+        <div class="col-sm-8 col-md-6 text-center">
+            <strong>
+                <h4>
+                    {{(freeDataUsageTotal / 1000000 > 1000 ? freeDataUsageTotal / 1000000000 : freeDataUsageTotal / 1000000) | number: '1.1-2'}}
+                    {{(freeDataUsageTotal / 1000000 > 1000 ? 'GB' : 'MB')}}
+                </h4> 
+            </strong>
+        </div>
+        <div class="col-sm-8 col-md-6 text-center">
+            <strong>
+                <h4>
+                    {{(billedDataUsageTotal / 1000000 > 1000 ? billedDataUsageTotal / 1000000000 : billedDataUsageTotal / 1000000) | number: '1.1-2'}}
+                    {{(billedDataUsageTotal / 1000000 > 1000 ? 'GB' : 'MB')}}
+                    {{limit}}
+                </h4> 
+            </strong>
+        </div>
+    </div>
+    <div class="row configuration" *ngIf="!isLoadingData">
+        <div class="col-sm-8 col-md-6 text-center">
+            Free Time
+        </div>
+        <div class="col-sm-8 col-md-6 text-center">
+            Billed Usage
+        </div>
+    </div>
+    <div class="row configuration">
+        <div class="col-sm-6 col-md-6">
+            <canvas id="canvas" width="300px" height="300px">{{chart}}</canvas>
+        </div>
+        <div class="col-sm-6 col-md-6">
+            <canvas id="canvas2" width="300px" height="300px">{{chart2}}</canvas>
+        </div>
+    </div>
+    <br>
+    <div class="row configuration" *ngIf="!isLoadingData">
+        <div class="col-sm-8 col-md-6" >
+                <table class="table table-striped table-responsive">
+                        <thead>
+                          <tr class="text-center">
+                              <th scope="col" class="header-text">Source</th>
+                              <th scope="col" class="header-text">Usage</th>
+                              <th scope="col" class="header-text">%</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr class="text-center" *ngFor="let data of freeDataUsage">
+                            <td>
+                              {{data.name}}
+                            </td>
+                            <td>
+                                {{(data.data / 1000000 > 1000 ? data.data / 1000000000 : data.data / 1000000) | number: '1.1-2'}}
+                                {{(data.data / 1000000 > 1000 ? 'GB' : 'MB')}}
+                            </td>
+                            <td>
+                                {{data.percent | percent: '1.2'}}
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+        </div>
+        <div class="col-sm-8 col-md-6">
+            <table class="table table-striped table-responsive">
+                <thead>
+                    <tr class="text-center">
+                        <th scope="col" class="header-text">Source</th>
+                        <th scope="col" class="header-text">Usage</th>
+                        <th scope="col" class="header-text">%</th>
+                    </tr>
+                </thead>
+                    <tbody>
+                        <tr class="text-center" *ngFor="let data of billedDataUsage">
+                            <td>
+                                {{data.name}}
+                            </td>
+                            <td>
+                                {{(data.data / 1000000 > 1000 ? data.data / 1000000000 : data.data / 1000000) | number: '1.1-2'}}
+                                {{(data.data / 1000000 > 1000 ? 'GB' : 'MB')}}
+                            </td>
+                            <td>
+                                {{data.percent | percent: '1.2'}}
+                            </td>
+                        </tr>
+                    </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template #content let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title"> Notification</h4>
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-6 col-lg-8 text-left">
+                    <p>Enable Email Notification</p>
+                </div>
+                <div class ="col-6 col-lg-4 text-right">
+                    <mat-slide-toggle
+                    [checked]="isEnabled"
+                    (change)="toggleEnabledEmailNotification()">
+                    </mat-slide-toggle>
+                </div>
+            </div>
+            <div class="row">
+                <div *ngIf="isEnabled">
+                    <div class="col-12">
+                        <p>
+                            Forwarding Email
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <input [(ngModel)]="email" style="width: 400px" [value]="email" class="form-control forwardEmail">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="setEmailNotification()">
+                <span *ngIf="!saving">SAVE SETTINGS</span>
+                <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+            </button>
+        </div>
+    </ng-template>
+</div>
+
+

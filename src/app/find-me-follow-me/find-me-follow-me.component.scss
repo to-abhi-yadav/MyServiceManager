@@ -1,0 +1,9 @@
+:host{
+    width: 300px;
+}
+// Small devices 
+@media (max-width: 576px) { 
+    :host {
+        width: 100%;
+    }
+}

@@ -1,0 +1,39 @@
+.smallerText {
+    font-size: large
+}
+#page-content-wrapper{
+    height: 100%;
+    // overflow-y: scroll;
+    // overflow-x: hidden;
+}
+
+.scroll {
+    overflow-x: scroll;
+}
+
+.call-records{
+    // min-height: 95vh;
+    // height: 95vh;
+    // overflow-y: scroll;
+    height: 100%;
+    margin-bottom: 100px;
+}
+th {
+    text-align: center
+}
+// Small devices 
+@media (max-width: 576px) { 
+    :host {
+        width: 100%;
+    }
+}
+// Small devices 
+@media (max-width: 991px) { 
+    :host{
+        width: 100%;
+    }
+    .container.call-records{
+        margin-top: 50px;
+        max-width: 100% !important;
+    }
+}

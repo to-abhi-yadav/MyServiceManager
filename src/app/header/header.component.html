@@ -1,0 +1,81 @@
+<!-- Large Header -->
+<nav class="d-none d-lg-flex navbar navbar-expand-lg bg-white" >
+    <a class="navbar-brand d-inline-block h-100" [routerLink]="['/dashboard']">
+      <img [src]="sanitizer.bypassSecurityTrustUrl(logo)" width="150" height="25" class="d-inline-block align-top" alt="">
+      <span class="ml-2 tagline-font-color">Services Manager</span>
+    </a>
+    <button *ngIf="showNavigation" class="navbar-toggler" type="button" data-toggle="collapse" (click)="showMobileNavbar()">
+        <span><fa-icon [icon]="['fas', 'bars']" size="lg" class="fa-bars"></fa-icon></span>
+    </button>
+    <div *ngIf="showNavigation" class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav ml-auto h-100">
+          <li class="nav-item active  justify-content-center align-self-center">
+            <a class="nav-link"><fa-icon [icon]="['fas', 'user-circle']" size="2x" class="fa-user-circle"></fa-icon></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link p-0">{{currentUser.userName || 'Username'}}</a>
+            <div *ngIf="!userAdmin && !partnerAdmin" class="p-0" ngbDropdown placement="bottom">
+                <a id="tnDropdown" *ngIf="currentUser.selectedTn !== null" ngbDropdownToggle data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentUser.selectedTn.number || ''}}</a>
+                <div ngbDropdownMenu class="dropdown-menu"aria-labelledby="tnDropdown">
+                  <div *ngFor="let tn of tns">
+                      <a class="dropdown-item" (click)="changeSelectedTn(tn)">{{tn.number}} - {{tn.label}}</a>
+                  </div>
+                </div>
+            </div>
+          </li>
+          <li ngbDropdown placement="left" class="nav-item">
+            <a  ngbDropdownToggle class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <fa-icon [icon]="['fas', 'cog']" size="1x" class="fa-cog"></fa-icon>
+            </a>
+            <div ngbDropdownMenu class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <a *ngIf="userAdmin" class="dropdown-item" class="dropdown-item" [routerLink]="['/admin/user-registration']">User Admin</a>
+              <a *ngIf="!userAdmin && !partnerAdmin && showUserProfile" class="dropdown-item" [routerLink]="['/user-settings']">User Profile</a>
+              <a *ngIf="!userAdmin && !partnerAdmin && showPortMyNumber" class="dropdown-item" href="https://hcwsc.bigrivertelephone.com/Account/Login?ReturnUrl=%2fPort">Port My Number</a>
+              <a class="dropdown-item" (click)="logoutUser()">Logout</a>
+            </div>
+          </li>
+        </ul>
+    </div>
+</nav>
+<nav *ngIf="showMobileNavigation" class="d-flex d-lg-none navbar navbar-expand-lg fixed-top bg-white mw-100 w-100">
+    <a class="navbar-brand d-inline-block h-50" [routerLink]="['/dashboard']">
+      <img [src]="sanitizer.bypassSecurityTrustUrl(logo)" width="125" height="30" class="d-inline-block align-top" alt="">
+      <span class="ml-2 tagline-font-color">Services Manager</span>
+    </a>
+    <button *ngIf="showNavigation" class="navbar-toggler" type="button" data-toggle="collapse" (click)="showMobileNavbar()">
+        <span><fa-icon [icon]="['fas', 'bars']" size="lg" class="fa-bars"></fa-icon></span>
+    </button>
+    <div *ngIf="showNavigation" class="navbar-collapse offcanvas-collapse" [ngClass]="{open: showMobileNav}" id="navbarsExampleDefault">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+              <a class="nav-link" href="#"><fa-icon [icon]="['fas', 'user-circle']" size="2x" class="fa-user-circle"></fa-icon><span class="ml-4">{{currentUser.userName || 'Username'}}</span></a>
+            </li>
+            <li class="nav-item">
+              <div *ngIf="!userAdmin && !partnerAdmin" class="p-0" ngbDropdown placement="bottom">
+                  <a id="tnDropdown" *ngIf="currentUser.selectedTn !== null" ngbDropdownToggle data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{currentUser.selectedTn.number || ''}}</a>
+                  <div ngbDropdownMenu class="dropdown-menu"aria-labelledby="tnDropdown">
+                    <div *ngFor="let tn of tns">
+                        <a class="dropdown-item" (click)="changeSelectedTn(tn)">{{tn.number}} - {{tn.label}}</a>
+                    </div>
+                  </div>
+              </div>
+            </li>
+            <li class="nav-item" *ngIf="!userAdmin && !partnerAdmin">
+                <a class="nav-link" [routerLink]="['/dashboard']">Dashboard</a>
+            </li>
+            <li class="nav-item" *ngIf="userAdmin">
+                <a class="nav-link" [routerLink]="['/admin/user-registration']">User Admin</a>
+            </li>
+            <li class="nav-item" *ngIf="!userAdmin && !partnerAdmin && showUserProfile">
+                <a class="nav-link" [routerLink]="['/user-settings']">User Profile</a>
+            </li>
+            <li class="nav-item" *ngIf="!userAdmin && !partnerAdmin && showPortMyNumber">
+              <a class="nav-link" href="https://hcwsc.bigrivertelephone.com/Account/Login?ReturnUrl=%2fPort">Port My Number</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" (click)="logoutUser()">Logout</a>
+            </li>
+          </ul>
+    </div>
+  </nav>
+

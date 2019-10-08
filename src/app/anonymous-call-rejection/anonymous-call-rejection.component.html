@@ -1,0 +1,29 @@
+<div class="container anonymous-call-rejection">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div class="row configuration mb-2">
+      <div class="col d-inline-flex">
+          <app-tooltip-icon tooltipText="This feature automatically rejects all calls from withheld numbers."></app-tooltip-icon>
+          <h5>Anonymous Call Rejection</h5>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+  </div>
+  <div class="row text-center" *ngIf="isToggling" >
+    <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+        <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+    </div>
+  </div>
+  <div class="row" *ngIf="!isToggling" >
+    <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-left">
+      Enable
+    </div>
+    <div class="col-8 col-sm-8 col-sm-8 col-lg-8 text-right">
+      <mat-slide-toggle
+        [checked]="isEnabled"
+        (change)="toggleEnabledStatus()">
+      </mat-slide-toggle>
+    </div>
+  </div>
+</div>

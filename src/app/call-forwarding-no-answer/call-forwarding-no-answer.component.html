@@ -1,0 +1,90 @@
+<div class="container call-forwarding-no-answer">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div *ngIf="hasError">
+    <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+      <p>{{errorMsg}}</p>
+    </div>
+  </div>
+  <div *ngIf="!hasError">
+    <div class="row configuration mb-2">
+        <div class="col d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature forwards incoming calls to another number when the original number does not answer."></app-tooltip-icon>
+            <h5>Call Forwarding No Answer</h5>
+        </div>
+        <div class="col-12">
+          <hr>
+        </div>
+    </div>
+    <div class="row configuration">
+      <div class="col">
+        <p>Enable</p>
+      </div>
+      <div class ="col-2 text-right">
+        <mat-slide-toggle
+        [checked]="isEnabled"
+        (change)="toggleEnabledStatus()">
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div class="row text-center" *ngIf="isToggling" >
+      <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+          <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+      </div>
+    </div>
+    <div *ngIf="!isToggling" >
+      <div *ngIf="isEnabled">
+        <div class="row configuration">
+          <div class="col-lg-10 text-left">
+            Number of Rings
+          </div>
+        </div>
+        <div class="row configuration">
+          <div class="col-lg-10 text-left">
+            <mat-form-field>
+              <mat-select required [(ngModel)]="rings">
+                  <mat-option [value]="0">0</mat-option>
+                  <mat-option [value]="1">1</mat-option>
+                  <mat-option [value]="2">2</mat-option>
+                  <mat-option [value]="3">3</mat-option>
+                  <mat-option [value]="4">4</mat-option>
+                  <mat-option [value]="5">5</mat-option>
+                  <mat-option [value]="6">6</mat-option>
+                  <mat-option [value]="7">7</mat-option>
+                  <mat-option [value]="8">8</mat-option>
+                  <mat-option [value]="9">9</mat-option>
+                  <mat-option [value]="10">10</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-lg-10 text-left">
+            <p>
+                Forwarding Number
+            </p>
+          </div>
+        </div>
+        <div class="row configuration">
+          <div class="col-12">
+            <input [(ngModel)]="forwardingNumber" [value]="forwardingNumber | phone: 'US'" class="form-control forwardEmail">
+          </div>
+        </div>
+        <br />
+        <div class="row mt-3">
+          <div class="col-12">
+            <button type="button" class="btn btn-primary" (click)="setCallForwardingNoAnswer()">
+                <span *ngIf="!saving">SAVE SETTINGS</span>
+                <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+            </button>
+          </div>
+        </div>
+        <div *ngIf="forwardingNumberCheck" class="row mt-3">
+          <div class="col-12">
+            <p>Forwading To: {{forwardingNumber | phone: 'US'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

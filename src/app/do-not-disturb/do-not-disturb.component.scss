@@ -1,0 +1,11 @@
+@import "../../../src/assets/stylesheets/global.scss";
+// CSS for sliders
+:host{
+    width: 375px;
+}
+// Small devices 
+@media (max-width: 576px) { 
+    :host {
+        width: 100%;
+    }
+}

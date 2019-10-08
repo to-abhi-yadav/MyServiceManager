@@ -1,0 +1,82 @@
+<div class="container">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div *ngIf="hasError">
+    <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+      <p>{{errorMsg}}</p>
+    </div>
+  </div>
+  <div *ngIf="!hasError">
+    <div class="row configuration mb-2">
+        <div class="col d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature forwards all of your incoming calls to an alternate number."></app-tooltip-icon>
+            <h5>Forward All Calls</h5>
+        </div>
+        <div class="col-12">
+          <hr>
+        </div>
+    </div>
+    <div class="row configuration">
+      <div class="col">
+        <p>Enable</p>
+      </div>
+      <div class="col-2 text-right">
+          <mat-slide-toggle
+          #enabled]
+          class="float-right"
+          [checked]="enabledStatus"
+          (change)="checkSingleRing()"
+          >
+          </mat-slide-toggle>
+      </div>
+    </div>
+    <div *ngIf="enabledStatus">
+      <div class="row configuration">
+          <div class="col-lg-10 text-left">
+              Ring once
+          </div>
+            <div class="col-8 col-sm-8 col-sm-8 col-lg-2 text-right">
+              <mat-slide-toggle 
+                [disabled]="!enabledStatus"
+                #singleRing
+                [checked]="singleRingStatus"
+                (change)="singleRingStatus = !singleRingStatus"
+              >
+              </mat-slide-toggle>
+            </div>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-lg-10 text-left">
+          <p>
+              Forwarding Number
+          </p>
+        </div>
+      </div>
+      <div class="row configuration">
+        <div class="col-12">
+            <input [(ngModel)]="forwardingNumber" [value]="forwardingNumber | phone: 'US'" class="form-control forwardEmail" [disabled]="!enabledStatus"/>
+        </div>
+        <div *ngIf="invalidTn" class="col-lg-10 text-left">
+            <p class="text-danger">
+                {{errorMessage}}
+            </p>
+        </div> 
+      </div>
+      <div class="row mt-3">
+          <div class="col-12">
+              <button class="btn btn-primary" (click)="setAllCallForwarding()">
+                <span *ngIf="!saving">SAVE SETTINGS</span>
+                <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+              </button>
+          </div>
+      </div>
+      <div *ngIf="forwardingNumberCheck" class="row mt-3">
+        <div class="col-12">
+          <p>Forwarding To: {{forwardingNumber | phone: 'US'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

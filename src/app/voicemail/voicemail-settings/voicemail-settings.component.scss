@@ -1,0 +1,90 @@
+@import "../../../../src/assets/stylesheets/global.scss";
+
+$primary-font-color:  var(--primaryFontColor);
+$secondary-font-color: var(--secondaryFontColor);
+$primary-button-color:  var(--primaryFontColor);
+$secondary-button-color: var(--secondaryFontColor);
+// CSS for sliders
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+    background-color: $secondary-font-color !important;
+}
+
+/deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+    background-color: $primary-font-color !important;
+}
+
+/deep/ .mat-select-content{
+  color: $primary-font-color !important;
+}
+/deep/ .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+  color: $primary-font-color !important;
+}
+/deep/ .mat-form-field.mat-focused.mat-primary .mat-select-arrow, .mat-form-field-label {
+  color: $primary-font-color !important;
+}
+/deep/ .mat-form-field.mat-focused .mat-form-field-label{
+  color: $primary-font-color !important;
+}
+/deep/ .mat-form-field.mat-focused .mat-form-field-ripple {
+  background-color: $primary-font-color !important;
+}
+.mat-focused{
+  color: $primary-font-color !important;
+}
+.primary-font-color{
+  color: $primary-font-color !important;
+}
+:host{
+  width: 300px;
+}
+.row.configuration {
+  border-bottom: 1px solid #E1E8EF;
+  padding-top: 20px;
+}
+.row.options {
+  padding-top: 20px;
+}
+.settingsRowCol {
+  width: 50%;
+  padding-right:10px;
+}
+.footerCol{
+  width: 33.3%;
+}
+
+.redOutline {
+  border: 1px solid red;
+}
+
+p.heading{
+  padding: 10px;
+}
+
+button.option {
+  color: grey
+}
+
+mat-select {
+  text-align: center;
+}
+
+/deep/ label#mat-form-field-label-1{
+  text-align: center !important;
+}
+
+/deep/ .cdk-overlay-container {
+  z-index: 9000 !important;
+}
+
+div.optionbutton {
+    display:inline-block;
+    color:#444;
+    background:#DDD;
+    cursor:pointer;
+    vertical-align:middle;
+    padding: 5px;
+    text-align: center;
+}
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+  color: #fff !important;
+}

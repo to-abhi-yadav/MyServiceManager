@@ -1,0 +1,60 @@
+<!--TO DO: Design Improvements-->
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">{{autopayType}}</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="container-fluid">
+        <form (ngSubmit)="submitForm()">
+          <div class="row text-center">
+            <div class="col-md-12 text-center">
+              <div id="dropin-container"></div>
+            </div>
+          </div>
+          <div class="row" *ngIf="autopaySuccess"> 
+            <div class="col-md-12 text-center">
+              <p class="header-text">
+                {{autopaySuccessMessage}}
+              </p>
+            </div>
+          </div>
+          <div *ngIf="isLoadingAutopay" class="col-12">
+            <div class="row align-items-center">
+              <div class="col text-center spinner">
+                <fa-icon [icon]="['fas', 'spinner']" size="5x" class="fa-spinner" spin="true"></fa-icon>
+              </div>
+            </div>
+          </div>
+          <div class="row" *ngIf="autopayError">
+            <div class="col-md-12 text-center">
+              <p style="color: red">{{autopayErrorMessage}}</p>
+            </div>
+            <div class="col-md-12 text-center">
+              <button *ngIf="isRegistrationAutopay" (click)="retryRegistration()" (close)="paymentError = null" class="btn btn-primary">Retry Registration</button>
+              <button *ngIf="!isRegistrationAutopay" (click)="retryUpdate()" (close)="paymentError = null" class="btn btn-primary">Retry Update</button>
+            </div>
+          </div>
+          <br />
+          <div class="row" *ngIf="autopayShowSubmit">
+            <div class="col-md-12 text-center"> 
+              <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </div>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="col-xs-4 footerCol">
+      </div>
+      <div class="col-xs-4 footerCol text-center">
+          
+      </div>
+      <div class="col-xs-4 footerCol">
+  
+      </div>
+    </div>
+  </ng-template>

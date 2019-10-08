@@ -1,0 +1,148 @@
+
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Voicemail Settings</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="container">
+      <div class="row" *ngIf="stillLoadingVoicemail">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12" class="text-center" style="padding: 50px;">
+            <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+        </div>
+      </div>
+      <div *ngIf="!stillLoadingVoicemail">
+        <div class="row configuration">
+          <div class="col-6 text-right settingsRowCol secondary-font-color">
+            <strong><p class="heading" style="display: inline-block;">Enable Voicemail</p></strong>
+            <mat-slide-toggle
+              [checked]="enableVoicemail"
+              (change)="enableVoicemail = !enableVoicemail;">
+            </mat-slide-toggle>
+          </div>
+          <div class="col-6 text-left verticalLine settingsRowCol">
+            <mat-form-field class="primary-font-color">
+              <mat-select class="primary-font-color" placeholder="Number Of Rings" [(value)]="numberOfRings">
+                <mat-option [value]="0">0</mat-option>
+                <mat-option [value]="1">1</mat-option>
+                <mat-option [value]="2">2</mat-option>
+                <mat-option [value]="3">3</mat-option>
+                <mat-option [value]="4">4</mat-option>
+                <mat-option [value]="5">5</mat-option>
+                <mat-option [value]="6">6</mat-option>
+                <mat-option [value]="7">7</mat-option>
+                <mat-option [value]="8">8</mat-option>
+                <mat-option [value]="9">9</mat-option>
+                <mat-option [value]="10">10</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <!-- <mat-form-field>
+                <select matNativeControl required [(value)]="numberOfRings" placeholder="Number Of Rings" >
+                    <option *ngFor="let num of possibleRings" [value]="num">{{num}}</option>
+                  </select>
+            </mat-form-field> -->
+          </div>
+        </div>
+        <div *ngIf="stillLoadingVoicemailOptions" class="text-center" style="padding: 50px;">
+            <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+        </div>
+        <div *ngIf="!stillLoadingVoicemailOptions">
+          <div class="row configuration">
+              <div class="col-6 text-right settingsRowCol secondary-font-color">
+                <strong><p class="heading" style="display: inline-block;">Forward Voicemail to Email</p></strong>
+                  <mat-slide-toggle
+                    [checked]="forwardVoicemailToEmail"
+                    (change)="forwardVoicemailToEmail = !forwardVoicemailToEmail;"
+                    [disabled]="!enableVoicemail">
+                  </mat-slide-toggle>
+              </div>
+              <div class="col-6 text-left verticalLine settingsRowCol">
+                <input 
+                (change)="updateForwardingEmail($event)"
+                [value]="forwardVoicemailEmail"
+                (blur)="emailFormattedCorrectlyForInput($event)"
+                [ngClass]="{redOutline: invalidForwardEmail}"
+                [disabled]="!enableVoicemail || !forwardVoicemailToEmail" class="form-control forwardEmail" type="email" value="" placeholder="Email Address">
+              </div>
+            </div>
+            <div class="row configuration">
+              <div class="col-6 text-right settingsRowCol secondary-font-color">
+                <strong><p class="heading" style="display: inline-block;">Send Notification to Email</p></strong>
+                <mat-slide-toggle
+                  [checked]="sendNotifToEmail"
+                  (change)="sendNotifToEmail = !sendNotifToEmail;"
+                  [disabled]="!enableVoicemail">
+                </mat-slide-toggle>
+              </div>
+              <div class="col-6 text-left verticalLine settingsRowCol">
+                <input 
+                (change)="updateNotifyEmail($event)"
+                [value]="notifyEmail"
+                [disabled]="!enableVoicemail || !sendNotifToEmail"
+                (blur)="emailFormattedCorrectlyForInput($event)"
+                [ngClass]="{redOutline: invalidNotifyEmail}"
+                class="form-control notifyEmail" type="email" value="" placeholder="Email Address">
+              </div>
+            </div>
+            <hr />
+            <strong><p class="text-center secondary-font-color">Notification Message Contents</p></strong>
+            <div class="row">
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                <button 
+                  [ngClass]="{active: callerIdName, disabled: !enableVoicemail}" 
+                  (click)="callerIdName = !callerIdName" class="btn btn-outline-primary btn-block option" type="button" name="button">Caller ID Name
+                </button>
+              </div>
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                <button 
+                  [ngClass]="{active: messageLength, disabled: !enableVoicemail}" 
+                  (click)="messageLength = !messageLength" class="btn btn-outline-primary btn-block option" type="button" name="button">Message Length
+                </button>
+              </div>
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                <button 
+                  [ngClass]="{active: dateOfMessage, disabled: !enableVoicemail}" 
+                  (click)="dateOfMessage = !dateOfMessage" class="btn btn-outline-primary btn-block option" type="button" name="button">Date of Message
+                </button>
+              </div>
+            </div>
+            <div class="row options">
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                <button 
+                  [ngClass]="{active: callerIdNumber, disabled: !enableVoicemail}" 
+                  (click)="callerIdNumber = !callerIdNumber" class="btn btn-outline-primary btn-block option" type="button" name="button">Caller ID Number
+                </button>
+              </div>
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                <button 
+                  [ngClass]="{active: timeOfMessage, disabled: !enableVoicemail}" 
+                  (click)="timeOfMessage = !timeOfMessage" class="btn btn-outline-primary btn-block option" type="button" name="button">Time Of Message
+                </button>
+              </div>
+              <div class="col-4 col-sm-4 col-md-4 col-lg-4 text-center">
+                <button 
+                  [ngClass]="{active: yourMailboxNumber, disabled: !enableVoicemail}"
+                  (click)="yourMailboxNumber = !yourMailboxNumber" class="btn btn-outline-primary btn-block option" type="button" name="button">Your Mailbox Number
+                </button>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="col-4 footerCol">
+    </div>
+    <div class="col-4 footerCol text-center">
+        <button type="button" [disabled]="forwardVoicemailToEmail && invalidForwardEmail || sendNotifToEmail && invalidNotifyEmail" class="btn btn-primary" (click)="updateVoicemailSettings()">
+          <span *ngIf="!saving">Save Settings</span>
+          <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+        </button>
+    </div>
+    <div class="col-4 footerCol">
+
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,119 @@
+<div class="container call-records">
+  <div class="content">
+    <div class="row full-width-row bg-white">
+      <div class="col-12 full-width-col" style="border-bottom: 1px solid rgba(0,0,0,.125);">
+        <app-header class="bg-white" style="height: 67px;"></app-header>
+      </div>
+      <div class="d-flex col-12 full-width-col">
+        <app-sidebar class="d-none d-lg-block"></app-sidebar>
+        <div class="container-fluid" id="page-content-wrapper">
+          <div class="p-lg-3" style="overflow: scroll">
+            <h1 class="mt-4">
+              Call Records<span class="smallerText">
+                (Past 90 Days)
+                <fa-icon ngbTooltip="Reload Records" (click)="retrieveCallRecords()" [icon]="['fas', 'sync']" size="sm"
+                  class="fa-sync" *ngIf="isLoading" spin="true"></fa-icon>
+                <fa-icon ngbTooltip="Reload Records" (click)="retrieveCallRecords()" [icon]="['fas', 'sync']" size="sm"
+                  class="fa-sync" *ngIf="!isLoading"></fa-icon>
+                  &nbsp;
+                  <app-tooltip-icon tooltipText="Click the refresh spinner(left) if you are switching TNs to reload the call recrods."></app-tooltip-icon>
+              </span>
+            </h1>
+            <hr>
+            <div class="call-records">
+              <div class="row text-center" *ngIf="isLoading">
+                <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+                  <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+                </div>
+              </div>
+              <div *ngIf="!isLoading && !noCallRecords">
+                <form>
+                  <div class="form-group form-inline">
+                    <div class="input-group mb-3" style="align-items: center;">
+                      <input placeholder="Search call records..." class="form-control ml-2" type="text"
+                        [value]="searchTerm" (keyup)="search($event)" />
+                      <div class="input-group-append">
+                        <button class="ml-2 btn primary-btn" type="button" (click)="searchTerm=''">Clear Search</button>
+                      </div>
+                    </div>
+                    <div class="ml-auto d-inline-flex" >
+                      <p *ngIf="showPdfDownload" class="mr-3 text-right" style="max-width: 300px; font-size: 14px;line-height: 1.2;">{{showPdfDownloadMsg}}</p>
+                      <div style="max-width: 350px">
+                        <div class="row col mr-0 pr-0 ml-0">
+                          <button *ngIf="showPdfDownload" class="btn primary-download-btn btn-block"
+                            (click)="downloadArchivedCallRecord()">Download Archived Call Records</button>
+                            <button *ngIf="searchTerm === '' || !searchTerm"
+                            class="mt-2 btn primary-btn btn-block" (click)="downloadCsv(false)">Download Call Records</button>
+                            <button *ngIf="searchTerm !== ''" class="mt-4 btn primary-btn btn-block" (click)="downloadCsv(true)">Download Filtered Call Records</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+                <table class="table table-striped">
+                  <thead>
+                    <tr #NgbdSortableHeader>
+                      <th scope="col" data-sortable="Date" (click)="onSort($event)">
+                        Date
+                        <fa-icon *ngIf="!dateSortOrderDesc" [icon]="['fas', 'sort-up']" size="1x" class="fa-sort-up"
+                          [ngStyle]="{color: dateSortOrderDesc ? '' : 'black'}"></fa-icon>
+                        <fa-icon *ngIf="dateSortOrderDesc" [icon]="['fas', 'sort-down']" size="1x" class="fa-sort-down"
+                          [ngStyle]="{color: dateSortOrderDesc ? 'black' : ''}"></fa-icon>
+                      </th>
+                      <th scope="col" data-sortable="Time" (click)="onSort($event)">Time</th>
+                      <th scope="col" data-sortable="From" (click)="onSort($event)">
+                        From
+                        <fa-icon *ngIf="!fromSortOrderDesc" [icon]="['fas', 'sort-up']" size="1x" class="fa-sort-up"
+                          [ngStyle]="{color: fromSortOrderDesc ? '' : 'black'}"></fa-icon>
+                        <fa-icon *ngIf="fromSortOrderDesc" [icon]="['fas', 'sort-down']" size="1x" class="fa-sort-down"
+                          [ngStyle]="{color: fromSortOrderDesc ? 'black' : ''}"></fa-icon>
+                      </th>
+                      <th scope="col" data-sortable="To" (click)="onSort($event)">
+                        To
+                        <fa-icon *ngIf="!toSortOrderDesc" [icon]="['fas', 'sort-up']" size="1x" class="fa-sort-up"
+                          [ngStyle]="{color: toSortOrderDesc ? '' : 'black'}"></fa-icon>
+                        <fa-icon *ngIf="toSortOrderDesc" [icon]="['fas', 'sort-down']" size="1x" class="fa-sort-down"
+                          [ngStyle]="{color: toSortOrderDesc ? 'black' : ''}"></fa-icon>
+                      </th>
+                      <th scope="col" data-sortable="Duration" (click)="onSort($event)">Duration</th>
+                      <th scope="col" data-sortable="Type" (click)="onSort($event)">
+                        Inbound<fa-icon ngbTooltip="Inbound Call" [icon]="['fas', 'long-arrow-alt-down']" size="1x"
+                          class="fa-long-arrow-alt-down"></fa-icon>
+                        /&nbsp;Outbound<fa-icon ngbTooltip="Outbound Call" [icon]="['fas', 'long-arrow-alt-up']"
+                          size="1x" class="fa-long-arrow-alt-up"></fa-icon>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let callRecord of callRecords" app-call-record-item [callRecordItem]="callRecord"
+                      [expandedView]="true" [searchTerm]="searchTerm"></tr>
+                  </tbody>
+                </table>
+                <div class="d-flex justify-content-between p-2">
+                  <span>Showing {{(page*pageSize) - (pageSize - 1)}} to
+                    {{(page*pageSize > myCallRecords.length ? myCallRecords.length : page*pageSize)}} of
+                    {{myCallRecords.length}} entries</span>
+                </div>
+                <div class="d-flex justify-content-between p-2">
+                  <ngb-pagination class="mw-100 scroll" [collectionSize]="myCallRecords.length" [(page)]="page" [maxSize]="4" [pageSize]="pageSize">
+                  </ngb-pagination>
+                  <select class="custom-select d-none d-md-block" style="width: auto" [(ngModel)]="pageSize">
+                    <option [ngValue]="3">3 items per page</option>
+                    <option [ngValue]="5">5 items per page</option>
+                    <option [ngValue]="10">10 items per page</option>
+                    <option [ngValue]="20">20 items per page</option>
+                  </select>
+                </div>
+              </div>
+              <div *ngIf="noCallRecords" class="row ">
+                <div class="col-12 text-center mt-5 mb-5">
+                  <h5>There are no call records for {{currentUser.selectedTn.number | phone}}</h5>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

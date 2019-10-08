@@ -1,0 +1,119 @@
+<div class="container speed-dial">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div *ngIf="hasError">
+    <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+      <p>{{errorMsg}}</p>
+    </div>
+  </div>
+  <div *ngIf="!hasError">
+    <div class="row configuration mb-2">
+      <div class="col-12 col-md-6 col-lg-6 d-inline-flex">
+        <app-tooltip-icon
+          tooltipText="This feature allows the user to place a call by pressing a reduced number of keys.">
+        </app-tooltip-icon>
+        <h5>Speed Dial</h5>
+      </div>
+      <div class="col-12 col-md-6 col-lg-6 text-left">
+        <p *ngIf="digitErrorMsg" class="text-danger">
+          {{digitErrorMsg}}
+        </p>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-lg-8 text-left">
+        <p>Enable</p>
+      </div>
+      <div class="col-6 col-lg-4 text-right">
+        <mat-slide-toggle [checked]="isEnabled" (change)="setSpeedDialing()">
+        </mat-slide-toggle>
+      </div>
+    </div>
+    <div class="row text-center" *ngIf="isToggling">
+      <div class="col-12 text-center">
+        <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+      </div>
+    </div>
+    <div [hidden]="!isEnabled" class="row" *ngIf="!isToggling">
+      <div class="col-12"><p>Enter your speed dial code on the keypad below and hit "Enter" to assign a number to the code.</div>
+      <div class="col-12">
+        <div style="text-align:center">
+          <input type="number" (input)="onInputChange($event)" class="form-control" value={{value}}
+            class="mb-2 form-control" maxlength="2" placeholder="" />
+          <div class="simple-keyboard"></div>
+        </div>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-primary btn-block force-bottom" [disabled]="!speedDialCodeEnabled"
+          (click)="openLg(content)">ENTER</button>
+      </div>
+      <div class="col-6">
+        <button class="btn btn-outline-primary btn-block force-bottom" [disabled]="!speedDialCodeEnabled"
+          (click)="clearCode()">CLEAR CODE</button>
+      </div>
+    </div>
+    <div [hidden]="!isEnabled" class="row" *ngIf="!isToggling && speedDialTns.length !== 0">
+      <table class="table table-striped mt-2">
+        <thead>
+          <tr>
+            <th class="text-center" scope="col">Code</th>
+            <th class="text-center" scope="col">Assigned No.</th>
+            <th class="text-center" scope="col">Remove</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let number of speedDialTns">
+            <td class="text-center">{{number.speed_code}}</td>
+            <td class="text-center">{{number.number | phone: 'US' }}</td>
+            <td class="text-center">
+              <fa-icon *ngIf="!deletingSpeedDialNumber" [icon]="['fas', 'trash-alt']" size="" class="fa-trash-alt"
+                (click)="deleteSpeedDialingNumber(number.speed_code, number.number)"></fa-icon>
+              <fa-icon *ngIf="deletingSpeedDialNumber" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner"
+                spin="true"></fa-icon>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Your Code:</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="row configuration ">
+      <div class="col-12">
+        <p class="text-center speed-dial-code">{{value}}</p>
+      </div>
+    </div>
+    <div class="row">
+      <form class="login-form p-3 col-12" [formGroup]="speedDialForm">
+        <ngb-alert *ngIf="error" type="danger" (close)="error = null">{{ error }}</ngb-alert>
+        <ngb-alert class="text-center" *ngIf="errorMsg" type="danger" (close)="errorMsg = null">{{ errorMsg }}
+        </ngb-alert>
+        <div class="col-12">
+          <p class="text-center">Add a speed dial number to this code.</p>
+          <div class="form-group">
+            <input type="text" class="form-control" formControlName="selectedTn"
+              [value]="speedDialForm.get('selectedTn').value || ''| phone: 'US'" placeholder="(xxx) xxx-xxxx">
+          </div>
+          <button class="btn secondary-btn" [disabled]="!saveSpeedDialEnabled" (click)="saveSpeedDial()">SAVE <fa-icon
+              *ngIf="addingSpeedDialNumber" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true">
+            </fa-icon></button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div *ngIf="hasError" class="mr-auto">
+      <p class="text-danger">{{errorMsg}}</p>
+    </div>
+  </div>
+</ng-template>

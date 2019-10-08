@@ -1,0 +1,76 @@
+.row.configuration {
+    border-bottom: 1px solid #E1E8EF;
+    padding-top: 20px;
+  }
+  .row.options {
+    padding-top: 20px;
+  }
+  .settingsRowCol {
+    width: 50%;
+    padding-right:10px;
+  }
+  .custom-day {
+    text-align: center;
+    padding: 0.185rem 0.25rem;
+    display: inline-block;
+    height: 2rem;
+    width: 2rem;
+  }
+  .custom-day.range, .custom-day:hover {
+    background-color: rgb(2, 117, 216);
+    color: white;
+  }
+  .custom-day.faded {
+    background-color: rgba(2, 117, 216, 0.5);
+  }
+  .custom-day.selected{  
+    background-color: rgba(255, 255, 0, .5);
+      
+  }
+  .footerCol{
+    width: 33.3%;
+  }
+  
+  .redOutline {
+    border: 1px solid red;
+  }
+  
+  p.heading{
+    padding: 10px;
+  }
+  
+  button.option {
+    color: grey
+  }
+  
+  mat-select {
+    text-align: center;
+  }
+  
+  /deep/ label#mat-form-field-label-1{
+    text-align: center !important;
+  }
+  
+  /deep/ .cdk-overlay-container {
+    z-index: 9000 !important;
+  }
+  
+  // CSS for sliders
+  /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-bar {
+      background-color: #96B0BA;
+  }
+  
+  /deep/ .mat-slide-toggle.mat-checked:not(.mat-disabled) .mat-slide-toggle-thumb {
+      background-color: #385F80;
+  }
+  
+  div.optionbutton {
+      display:inline-block;
+      color:#444;
+      background:#DDD;
+      cursor:pointer;
+      vertical-align:middle;
+      padding: 5px;
+      text-align: center;
+  }
+  

@@ -1,0 +1,72 @@
+<div class="container call-records">
+    <app-six-dot-drag></app-six-dot-drag>
+    <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+    <div class="row d-none d-md-flex">
+      <div class="col-12 col-md-8 col-lg-8 d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature shows the call records for the past 90 days."></app-tooltip-icon>
+            <h5>Call Records <span class="smallerText">(Past 90 Days)</span></h5>
+      </div>
+      <div class="col-12 col-md-4 col-lg-4 text-right">
+          <a class="d-inline-flex" [routerLink]="['/call-records']">
+            <span class="btn btn-small view-all">View All Records</span>
+          </a>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+    </div>
+    <div class="row d-flex d-md-none">
+      <div class="col-12 d-inline-flex">
+            <app-tooltip-icon tooltipText="This feature shows the call records for the past 90 days."></app-tooltip-icon>
+            <h5>Call Records</h5> <a class="ml-auto" [routerLink]="['/call-records']">
+              <span class="view-all">View All Records</span>
+            </a>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+    </div>
+    <div class="row text-center" *ngIf="isLoading">
+      <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+          <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+      </div>
+    </div>
+    <table *ngIf="!noCallRecords" class="table table-striped" style="border-top: none;">
+      <thead>
+      <tr #NgbdSortableHeader>
+        <th scope="col" data-sortable="Date" (click)="onSort($event)">
+          Date
+          <fa-icon *ngIf="!dateSortOrderDesc" [icon]="['fas', 'sort-up']" size="1x" class="fa-sort-up" [ngStyle]="{color: dateSortOrderDesc ? '' : 'black'}"></fa-icon>
+          <fa-icon *ngIf="dateSortOrderDesc" [icon]="['fas', 'sort-down']" size="1x" class="fa-sort-down" [ngStyle]="{color: dateSortOrderDesc ? 'black' : ''}"></fa-icon>
+        </th>
+        <th scope="col" data-sortable="Time" (click)="onSort($event)">Time</th>
+        <th scope="col" data-sortable="Type" (click)="onSort($event)">
+          Inbound<fa-icon ngbTooltip="Inbound Call" [icon]="['fas', 'long-arrow-alt-down']" size="1x" class="fa-long-arrow-alt-down"></fa-icon>
+          /&nbsp;Outbound<fa-icon ngbTooltip="Outbound Call" [icon]="['fas', 'long-arrow-alt-up']" size="1x" class="fa-long-arrow-alt-up"></fa-icon>
+        </th>
+        <th scope="col" data-sortable="Number" (click)="onSort($event)">
+          Phone Number
+          <fa-icon *ngIf="!numberSortOrderDesc" [icon]="['fas', 'sort-up']" size="1x" class="fa-sort-up" [ngStyle]="{color: numberSortOrderDesc ? '' : 'black'}"></fa-icon>
+          <fa-icon *ngIf="numberSortOrderDesc" [icon]="['fas', 'sort-down']" size="1x" class="fa-sort-down" [ngStyle]="{color: numberSortOrderDesc ? 'black' : ''}"></fa-icon>
+        </th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let callRecord of callRecords" app-call-record-item [callRecordItem]="callRecord"></tr>
+      </tbody>
+    </table>
+    <div *ngIf="!noCallRecords" class="d-flex justify-content-between p-2">
+      <span>Showing {{(page*pageSize) - (pageSize - 1)}} to {{(page*pageSize > myCallRecords.length ? myCallRecords.length : page*pageSize)}} of {{myCallRecords.length}} entries</span>
+    </div>
+    <div *ngIf="!noCallRecords" class="d-flex justify-content-between p-2">
+        <ngb-pagination class="mw-100 scroll" [collectionSize]="myCallRecords.length" [(page)]="page" [maxSize]="4" [pageSize]="pageSize">
+        </ngb-pagination>
+        <select class="custom-select d-none d-lg-block" style="width: auto" [(ngModel)]="pageSize">
+          <option [ngValue]="3">3 items per page</option>
+          <option [ngValue]="5">5 items per page</option>
+        </select>
+    </div>
+    <div class="col-12 text-center mt-5 mb-5" *ngIf="noCallRecords">
+      <p>There are no call records available for {{currentUser.selectedTn.number | phone}}</p>
+    </div>
+</div>

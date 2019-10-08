@@ -1,0 +1,48 @@
+<ng-template #holidayDates let-holidayDates>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> Set Holiday Dates</h4>
+        <button type="button" class="close" aria-label="Close" (click)="holidayDates.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="text-center">
+      <ngb-datepicker #dp [(ngModel)]="date" [displayMonths]="2" [minDate]="minDate" [maxDate]="maxDate" 
+      (navigate)="date = $event.next">
+      </ngb-datepicker>
+    </div>
+    <div class="text-center">
+      <button type="button" class="btn btn-primary" (click)="updateHolidayDates()">
+        <span *ngIf="!saving">Add</span>
+        <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+    </button>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-4 footerCol">
+        </div>
+        <div>
+          <fa-icon *ngIf="isDeleting" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+          <table class="table table-striped table-responsive">
+            <thead>
+              <tr>
+                <th scope="col" class="header-text">Holiday Dates</th>
+                <th scope="col" class="header-text">Remove</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let n of holiday | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                <td>{{n}}</td>
+                <td (click)="deleteHolidayDate(n)">
+                  <fa-icon [icon]="['fas', 'trash-alt']" size="lg" class="fa-trash-alt redOnHover"></fa-icon>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+          <ngb-pagination
+          [(page)]="page"
+          [pageSize]="pageSize"
+          [collectionSize]="holiday.length"></ngb-pagination>
+        </div>
+        <div class="col-xs-4 footerCol">
+        </div>
+    </div>
+</ng-template>

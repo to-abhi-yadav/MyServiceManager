@@ -1,0 +1,16 @@
+<td>{{ getDate(callRecordItem.callDateTime) | date: "MM-dd-yyyy" }}</td>
+<td>{{ getDate(callRecordItem.callDateTime) | date: "h:mm:ss a" }}</td>
+<td *ngIf="expandedView">
+    <ngb-highlight [result]="callRecordItem.calledFrom | phone: 'US'" [term]="searchTerm | phone: 'US'"></ngb-highlight>
+</td>
+<td *ngIf="expandedView">
+    <ngb-highlight [result]="callRecordItem.calledTo | phone: 'US'" [term]="searchTerm | phone: 'US'"></ngb-highlight>
+</td>
+<td *ngIf="expandedView">{{callRecordItem.callDuration}} minutes</td>
+<td>
+    <fa-icon ngbTooltip="Outbound Call" *ngIf="callRecordItem.callType == 'Outbound'" [icon]="['fas', 'long-arrow-alt-up']" size="lg" class="fa-long-arrow-alt-up"></fa-icon>
+    <fa-icon ngbTooltip="Inbound Call" *ngIf="callRecordItem.callType == 'Inbound'" [icon]="['fas', 'long-arrow-alt-down']" size="lg" class="fa-long-arrow-alt-down"></fa-icon>
+</td>
+<td *ngIf="!expandedView">
+    <ngb-highlight [result]="callRecordItem.callType == 'Outbound' ? (callRecordItem.calledTo | phone: 'US') : (callRecordItem.calledFrom | phone: 'US')" ></ngb-highlight>
+</td>

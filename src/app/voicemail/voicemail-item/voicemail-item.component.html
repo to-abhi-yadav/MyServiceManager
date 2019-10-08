@@ -1,0 +1,23 @@
+<td>{{voicemailItem.from | phone }}</td>
+<td class="d-none d-sm-table-cell">{{voicemailItem.recorded | date: 'MM/dd/yyyy'}}</td>
+<!-- <td>
+  <fa-icon *ngIf="voicemailItem.reviewed" [icon]="['fas', 'check']" size="lg" class="fa-check green"></fa-icon>
+  <fa-icon *ngIf="!voicemailItem.reviewed" [icon]="['fas', 'times']" size="lg" class="fa-times"></fa-icon>
+</td> -->
+<!-- Hidden on mobile -->
+<td class="d-none d-sm-table-cell">
+  <mat-basic-audio-player #audio (ended)="playbackEnded()" [audioUrl]="voicemailItem.getUrlForVoicemailFile(this.currentUser.selectedTn.number, this.currentUser.accountId)"></mat-basic-audio-player>
+</td>
+<td class="d-block d-sm-none">
+  <button *ngIf="!playingAudio" (click)="toggleAudio()">{{this.audioText}}</button>
+  <button *ngIf="playingAudio" (click)="toggleAudio()">Pause</button>
+  <button *ngIf="!playingAudio && audioFailure">{{this.audioFailureMessage}}</button>
+</td>
+<td class="d-none d-sm-table-cell pointer-cursor">
+  <fa-icon *ngIf="!isDownloading" (click)="downloadFile()" [icon]="['fas', 'download']" size="lg" class="fa-download yellow"></fa-icon>
+  <fa-icon *ngIf="isDownloading" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+</td>
+<td (click)="deleteVoicemailItem()">
+  <fa-icon *ngIf="!isDeleting" [icon]="['fas', 'trash-alt']" size="lg" class="fa-trash-alt redOnHover"></fa-icon>
+  <fa-icon *ngIf="isDeleting" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+</td>

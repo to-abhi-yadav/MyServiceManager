@@ -1,0 +1,63 @@
+<div class="container auto-attendant">
+  <app-six-dot-drag></app-six-dot-drag>
+  <app-three-dot-component-menu component="{{component}}"></app-three-dot-component-menu>
+  <div *ngIf="hasError">
+    <div class="col-12 col-sm-12 col-ms-12 col-lg-12 text-center">
+      <p>{{errorMsg}}</p>
+    </div>
+  </div>
+  <div *ngIf="!hasError">
+    <div class="row configuration mb-2">
+      <div class="col d-inline-flex">
+        <app-tooltip-icon tooltipText="This feature allows callers to be transferred to an extension without going through a telephone operator."></app-tooltip-icon>
+        <h5>Auto Attendant</h5>
+      </div>
+      <div class="col-12">
+        <hr>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 col-lg-8 text-left">
+          <p>Enable</p>
+      </div>
+      <div class ="col-6 col-lg-4 text-right">
+          <mat-slide-toggle
+          [checked]="isEnabled"
+          (change)="toggleEnabledStatus()">
+          </mat-slide-toggle>
+      </div>
+    </div>
+    <div class="row text-center" *ngIf="isToggling">
+      <div class="col-12 text-center">
+        <fa-icon [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+      </div>
+    </div>
+    <div class="row" *ngIf="!isToggling">
+      <div *ngIf="isEnabled">
+        <div class="row mb-2">
+              <button class="btn btn-primary" style="margin: 5px" (click)="launchModalSetBusinessHours()">
+                SET BUSINESS HOURS
+              </button>
+              <button class="btn btn-primary" style="margin: 5px" (click)="launchModalSetHolidayDates()">
+                SET HOLIDAY DATES
+              </button>
+        </div>
+        <div class="row mb-2">
+          <mat-tab-group #tabGroup>
+              <mat-tab label="Regular Business Hours">
+                  <app-regular-business-hours ></app-regular-business-hours>
+              </mat-tab>
+              <mat-tab label="Off Business Hours">
+                  <ng-template matTabContent><app-off-business-hours></app-off-business-hours></ng-template>
+              </mat-tab>
+              <mat-tab label="Holidays">
+                  <ng-template matTabContent><app-holidays></app-holidays></ng-template>
+              </mat-tab>
+            </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<app-set-business-hours #setBusinessHours [currentUser]="currentUser"></app-set-business-hours>
+<app-set-holiday-dates #setHolidayDates [currentUser]="currentUser"></app-set-holiday-dates>

@@ -1,0 +1,49 @@
+.row.configuration {
+    border-bottom: 1px solid #E1E8EF;
+    padding-top: 20px;
+  }
+  .row.options {
+    padding-top: 20px;
+  }
+  .settingsRowCol {
+    width: 50%;
+    padding-right:10px;
+  }
+  .footerCol{
+    width: 33.3%;
+  }
+  
+  .redOutline {
+    border: 1px solid red;
+  }
+  
+  p.heading{
+    padding: 10px;
+  }
+  
+  button.option {
+    color: grey
+  }
+  
+  mat-select {
+    text-align: center;
+  }
+  
+  /deep/ label#mat-form-field-label-1{
+    text-align: center !important;
+  }
+  
+  /deep/ .cdk-overlay-container {
+    z-index: 9000 !important;
+  }
+  
+  div.optionbutton {
+      display:inline-block;
+      color:#444;
+      background:#DDD;
+      cursor:pointer;
+      vertical-align:middle;
+      padding: 5px;
+      text-align: center;
+  }
+  

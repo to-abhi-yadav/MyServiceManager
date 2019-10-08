@@ -1,0 +1,11 @@
+.dropdown-toggle::after {
+    display:none;
+}
+// override weird browser 3 dot styling
+.dropdown-toggle{
+    border-color: #f8f9fa !important;
+    background-color: #f8f9fa !important;
+    :hover{
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,68 @@
+<ng-template #busHoursComponent let-busHoursModal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title"> Set Business Hours</h4>
+        <button type="button" class="close" aria-label="Close" (click)="busHoursModal.dismiss('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <p>Enter the start and end time (24-hour HH:MM) of each business day in the 
+                appropriate week day. If the week day is not a business day, leave both the start 
+                and end time ﬁelds blank.</p>
+            </div>
+            <br />
+            <div class="col-12">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th class="text-center"></th>
+                            <th class="text-center">Mon</th>
+                            <th class="text-center">Tue</th>
+                            <th class="text-center">Wed</th>
+                            <th class="text-center">Thurs</th>
+                            <th class="text-center">Fri</th>
+                            <th class="text-center">Sat</th>
+                            <th class="text-center">Sun</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-center"><b>Start</b></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="monStart" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="tueStart" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="wedStart" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="thursStart" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="friStart" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="satStart" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="sunStart" required [maxLength]="5"></td>
+                            </tr>
+                            <tr>
+                                <td class="text-center"><b>End</b></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="monEnd" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="tueEnd" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="wedEnd" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="thursEnd" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="friEnd" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="satEnd" required [maxLength]="5"></td>
+                                <td><input class="form-control" size=1 [(ngModel)]="sunEnd" required [maxLength]="5"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="col-xs-4 footerCol">
+        </div>
+        <div class="col-xs-4 footerCol text-center">
+            <button type="button" class="btn btn-primary" (click)="updateBusinessHours()">
+                <span *ngIf="!saving">Submit</span>
+                <fa-icon *ngIf="saving" [ngClass]="{disabled: saving}" [icon]="['fas', 'spinner']" size="lg" class="fa-spinner" spin="true"></fa-icon>
+            </button>
+        </div>
+        <div class="col-xs-4 footerCol">
+        </div>
+    </div>
+</ng-template>
